@@ -1,7 +1,7 @@
 import game_framework
 from pico2d import *
 import random
-import main_state
+import class_cursor
 
 
 ###############################################################
@@ -403,7 +403,7 @@ step6 적 hp 0: 승리
 
 # 메인에서 유저객체와 npc의 타입을 받아와 설정해준다.
 def enter(user,npc):
-    global ground_image, text_image, tool_group, dice_group,ani_group,enem_test, textbox, number, hp, Player
+    global ground_image, text_image, tool_group, dice_group,ani_group,enem_test, textbox, number, hp, Player, cursor
     Player = user
     ground_image = load_image('battle_ground_test3.png')
     text_image = load_image('battle_text_box.png')
@@ -417,6 +417,7 @@ def enter(user,npc):
     hp=Hp(Player,enem_test)
     for i in range(0,5):
         Criminal_Tool.tool_cnt[i] =0
+    cursor=class_cursor.Cursor()
 
 
 def exit():
@@ -442,7 +443,7 @@ def resume():
 
 
 def handle_events(frame_time):
-    global battle_step
+    global battle_step,cursor
     events=get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -470,21 +471,27 @@ def handle_events(frame_time):
                 elif battle_step == 5: #결과창 떠있는 상태
                     initialize_turn()
                     game_framework.pop_state()
-
-        elif(event.type == SDL_MOUSEMOTION):
-            ######################
-            #print(event.x,600 - event.y)  # (테스트용 좌표표시)
-            ####################
+        if(event.type == SDL_MOUSEMOTION):
+            class_cursor.Cursor.x, class_cursor.Cursor.y=event.x,600-event.y
+            for tool in tool_group:
+                #손가락을 펼치는 조건들
+                if battle_step == 2 and collide(event.x,600-event.y,tool) and tool.state == 0 and ( int(Criminal_Tool.check_state / 10)==0 or int(Criminal_Tool.check_state % 10)==0):
+                    cursor.state = 1
+                    break
+                else:
+                    cursor.state = 0
             for tool in tool_group:
                 if tool.state == 3: # 잡은 상태에서 드래그
+                    cursor.state = 2
                     tool.x=event.x
                     tool.y=600-event.y
         #마우스 버튼 클릭
-        elif(event.type == SDL_MOUSEBUTTONDOWN):
+        if(event.type == SDL_MOUSEBUTTONDOWN):
             #왼쪽
             if (event.button == SDL_BUTTON_LEFT) and ( int(Criminal_Tool.check_state / 10)==0 or int(Criminal_Tool.check_state % 10)==0):
                 for tool in tool_group:
                     if battle_step == 2 and collide(event.x,600-event.y,tool) and tool.state == 0:
+                        cursor.state=2
                         tool.x=event.x
                         tool.y= 600-event.y
                         tool.state = 3 # 잡은 상태
@@ -524,6 +531,7 @@ def handle_events(frame_time):
                             tool_group.remove(tool)
         #마우스 왼쪽 버튼을 떼었을 때
         elif(event.type == SDL_MOUSEBUTTONUP and event.button ==SDL_BUTTON_LEFT and event.button !=SDL_BUTTON_RIGHT):
+            cursor.state=0
             for tool in tool_group:
                 if tool.state ==3:
                     toolbox=collide_toolbox(tool)
@@ -673,6 +681,7 @@ def draw(frame_time):
             break
     #    tool.draw_bb()
 
+    cursor.draw()
     update_canvas()
     delay(0.03)
 

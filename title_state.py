@@ -1,19 +1,20 @@
 import game_framework
 from pico2d import *
 import main_state
-import battle_state
+import class_cursor
 
 
 name = "TitleState"
 image = None
 
 def enter(object1=None,object2=None):
-    global back_image,space_image, name_image, opacify_time,change, name_x
+    global back_image,space_image, name_image, opacify_time,change, name_x, cursor
     back_image = load_image('title_01.png')
     space_image = load_image('space_bar.png')
     name_image = load_image('title_name_2.png')
     opacify_time, change=0, 1
     name_x = 1500
+    cursor=class_cursor.Cursor()
 
 def exit():
     global image
@@ -33,6 +34,8 @@ def handle_events(frame_time):
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+        elif(event.type == SDL_MOUSEMOTION):
+            class_cursor.Cursor.x,class_cursor.Cursor.y=event.x,600-event.y
         else:
             if(event.type, event.key) == (SDL_KEYDOWN,SDLK_ESCAPE):
                 game_framework.quit()
@@ -65,7 +68,7 @@ def draw(frame_time):
     name_image.draw(name_x,520)
     if name_x == 365:
         space_image.draw(900,60)
-
+    cursor.draw()
     update_canvas()
 
 

@@ -1,5 +1,6 @@
 import game_framework
 import title_state
+import class_cursor
 from pico2d import *
 
 name = "StartState"
@@ -32,6 +33,9 @@ def draw(frame_time):
 
 def handle_events(frame_time):
     events = get_events()
+    for event in events:
+        if(event.type == SDL_MOUSEMOTION):
+            class_cursor.Cursor.x, class_cursor.Cursor.y=event.x,600-event.y
 
 
 def pause(): pass

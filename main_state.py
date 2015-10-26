@@ -9,6 +9,7 @@ import class_user
 import class_Npc
 import class_main_text
 import class_entrance
+import class_cursor
 
 name = "MainState"
 
@@ -18,7 +19,7 @@ font = None
 npc_cnt = 1
 
 def enter():
-    global boy,background,font,npc_group,npc_test,status_image,main_text,police,entrance_group
+    global boy,background,font,npc_group,npc_test,status_image,main_text,police,entrance_group,cursor
     #텍스트
     font = load_font('nanumfont.ttf')
     main_text = class_main_text.Main_Text()
@@ -45,6 +46,8 @@ def enter():
     #유저 위치설정
     #boy.x,boy.y = 1128,464
     boy.x,boy.y = 1152,504
+
+    cursor=class_cursor.Cursor()
 
 def exit():
     global boy, background,npc_group, status_image
@@ -73,7 +76,9 @@ def handle_events(frame_time):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
             for row in boy.bg.map_matrix:
                  print (row)
-        ####################################################################################
+        #########################################################################################
+        elif(event.type == SDL_MOUSEMOTION):
+             class_cursor.Cursor.x, class_cursor.Cursor.y=event.x,600-event.y
         if main_text.npc == None:
             boy.handle_event(event,main_text)
         else:
@@ -157,7 +162,6 @@ def update(frame_time):
         generate(random.randint(1,10))
 
 def draw(frame_time):
-    global npc_group
     clear_canvas()
     background.draw()
     if npc_cnt >2:
@@ -174,6 +178,8 @@ def draw(frame_time):
     font.draw_unicode(35 , 510, '최근 범행  [' + '%6s, '%boy.place_s + '%6s, '%boy.type_s + '%6s'%boy.tool_s + ' ]        ')
 
     main_text.draw()
+
+    cursor.draw()
     update_canvas()
 
 #해당 좌표가 유저에게 보이는지 확인
