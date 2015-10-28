@@ -45,7 +45,7 @@ def enter():
             generate(i)
     #유저 위치설정
     #boy.x,boy.y = 1128,464
-    boy.x,boy.y = 1152,504
+    boy.x,boy.y = 1152,496
 
     cursor=class_cursor.Cursor()
 

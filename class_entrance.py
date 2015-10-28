@@ -192,7 +192,7 @@ class Entrance:
     def get_bb(self):
         if self.type == 105:
             return self.x -16,self.y-4,self.x+16, self.y+4
-        return self.x -4,self.y-4,self.x+4, self.y+4
+        return self.x -8,self.y-8,self.x+8, self.y+8
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())

@@ -69,68 +69,86 @@ class Npc:
 
     def select_type(self):
         bigtype = random.randint(1,6) #NPC 큰 카테고리 정하기
-
+        find_switch =0
         while(1): #주의: 무한루프에 빠질 수 있으니 애초에 메인스테이트쪽에서 NPC수가 종류수를 넘어가지 않게만 생성해야한다.
             if(bigtype == 1):
-                self.type = random.randint(10,12)
-                for npc in self.npc_group: #이미 그 타입이 있는지 확인
-                    if(self.type == npc.type):
-                        bigtype+=1 #있으면 다음카테고리로 넘어가기
-                        break
-                if(bigtype == 1):
-                    self.type_s = " 할머니"
-                    self.speech = "\"반가워요 호호호...\"                   "
-                    return #빅타입 값이 그대로라는 뜻 = 포문에서 같은 타입을 찾지 못함
+                for i in range(10,13):
+                    self.type = i
+                    for npc in self.npc_group: #이미 그 타입이 있는지 확인
+                        if(self.type == npc.type):
+                            find_switch=1
+                            break
+                    if find_switch == 0:
+                        self.type_s = " 할머니"
+                        self.speech = "\"반가워요 호호호...\"                   "
+                        return #빅타입 값이 그대로라는 뜻 = 포문에서 같은 타입을 찾지 못함
+                    else: find_switch = 0
+                bigtype +=1
             if(bigtype ==2):
-                self.type = random.randint(20,23)
-                for npc in self.npc_group:
-                    if(self.type == npc.type):
-                        bigtype+=1
-                        break
-                if(bigtype == 2):
-                    self.type_s = "할아버지"
-                    self.speech = "\"아이고 허리야...\"                          "
-                    return
+                for i in range(20,24):
+                    self.type = i
+                    for npc in self.npc_group:
+                        if(self.type == npc.type):
+                            find_switch=1
+                            break
+                    if find_switch == 0:
+                        self.type_s = "할아버지"
+                        self.speech = "\"아이고 허리야...\"                          "
+                        return
+                    else: find_switch=0
+                bigtype +=1
             if(bigtype ==3):
-                self.type = random.randint(30,35)
-                for npc in self.npc_group:
-                    if(self.type == npc.type):
-                        bigtype+=1
-                        break
-                if(bigtype == 3):
-                    self.type_s = "소녀"
-                    self.speech = "\"안녕하세요!\"                   "
-                    return
+                for i in range(30,36):
+                    self.type = i
+                    for npc in self.npc_group:
+                        if(self.type == npc.type):
+                            find_switch=1
+                            break
+                    if find_switch == 0:
+                        self.type_s = "소녀"
+                        self.speech = "\"안녕하세요!\"                   "
+                        return
+                    else: find_switch=0
+                bigtype +=1
             if(bigtype ==4):
-                self.type = random.randint(40,46)
-                for npc in self.npc_group:
-                    if(self.type == npc.type):
-                        bigtype+=1
-                        break
-                if(bigtype == 4):
-                    self.type_s = "소년"
-                    self.speech = "\"왜 불러요! 바쁘다구요!!\"                 "
-                    return
+                for i in range(40,47):
+                    self.type = i
+                    for npc in self.npc_group:
+                        if(self.type == npc.type):
+                            find_switch=1
+                            break
+                    if find_switch == 0:
+                        self.type_s = "소년"
+                        self.speech = "\"왜 불러요! 바쁘다구요!!\"                 "
+                        return
+                    else: find_switch=0
+                bigtype +=1
             if(bigtype ==5):
-                self.type = random.randint(50,59)
-                for npc in self.npc_group:
-                    if(self.type == npc.type):
-                        bigtype+=1
-                        break
-                if(bigtype == 5):
-                    self.type_s = "젊은여성"
-                    self.speech = "\"길 막지 말고 비켜줄래요?\"                 "
-                    return
+                for i in range(50,60):
+                    self.type = i
+                    for npc in self.npc_group:
+                        if(self.type == npc.type):
+                            find_switch=1
+                            break
+                    if find_switch == 0:
+                        self.type_s = "젊은여성"
+                        self.speech = "\"길 막지 말고 비켜줄래요?\"                 "
+                        return
+                    else: find_switch =0
+                bigtype +=1
             if(bigtype ==6):
-                self.type = random.randint(60,69)
-                for npc in self.npc_group:
-                    if(self.type == npc.type):
-                        bigtype=1
-                        break
-                if(bigtype == 6):
-                    self.type_s = "젊은남성"
-                    self.speech = "\"저한테 무슨 볼일이라도?\"                 "
-                    return
+                for i in range(60,70):
+                    self.type = i
+                    for npc in self.npc_group:
+                        if(self.type == npc.type):
+                            find_switch = 1
+                            break
+                    if find_switch == 0:
+                        self.type_s = "젊은남성"
+                        self.speech = "\"저한테 무슨 볼일이라도?\"                 "
+                        return
+                    else: find_switch = 0
+                bigtype = 1
 
 
     def get_bb(self):
