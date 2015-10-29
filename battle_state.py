@@ -110,43 +110,43 @@ class Enemy:
             self.min=1
             self.max=3
             self.gold=150
-            self.image = load_image('battle_grandma.png')
+            self.image = load_image('battle_grandma2.png')
         elif self.type == 2: # oldman
             self.hp= random.randint(13,19)
             self.min=1
             self.max=5
             self.gold=300
-            self.image = load_image('battle_grandpa.png')
+            self.image = load_image('battle_grandpa2.png')
         elif self.type == 3: # girl
             self.hp= random.randint(17,23)
             self.min=3
             self.max=6
             self.gold=500
-            self.image = load_image('battle_girl.png')
+            self.image = load_image('battle_girl2.png')
         elif self.type == 4: # boy
             self.hp= random.randint(22,28)
             self.min=5
             self.max=9
             self.gold=750
-            self.image = load_image('battle_boy.png')
+            self.image = load_image('battle_boy2.png')
         elif self.type == 5: # woman
             self.hp= random.randint(28,34)
             self.min=7
             self.max=12
             self.gold=1100
-            self.image = load_image('battle_woman.png')
+            self.image = load_image('battle_woman2.png')
         elif self.type == 6: # man
             self.hp= random.randint(35,40)
             self.min=9
             self.max=15
             self.gold=1500
-            self.image = load_image('battle_man.png')
+            self.image = load_image('battle_man2.png')
         elif self.type == 7: # police
             self.hp= 99
             self.min=12
             self.max=20
             self.gold=2000
-            self.image = load_image('battle_police.png')
+            self.image = load_image('battle_police2.png')
         self.set_attack_value()
 
 
