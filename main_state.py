@@ -46,13 +46,13 @@ class Entrance:
     def update(self,main_text):
         if self.collide(self.user):
             self.active_type =self.type
-            self.user.running = 0
+            self.user.running = False
             main_text.npc=self
             if main_text.step ==0:
                 if self.type == self.HOSPITAL:
                     main_text.step=1
                     main_text.string1 = "병원                                           "
-                    main_text.string2 = "체력이 0이 되면 오는 곳입니다.                               "
+                    main_text.string2 = "체력이 0이 되면 병원으로 후송됩니다.                               "
                     main_text.string3 = "                                        "
                 elif self.type == self.PIZZA_SHOP:
                     main_text.string1 = "피자헛                                           "
@@ -212,7 +212,7 @@ class Entrance:
     def get_bb(self):
         if self.type == self.CITY_HALL:
             return self.x -16,self.y-4,self.x+16, self.y+4
-        return self.x -8,self.y-8,self.x+8, self.y+8
+        return self.x -8,self.y-14,self.x+8, self.y+8
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -230,9 +230,8 @@ class Main_Text:
     box_image=None
     button_image = None
     font = None
-    OFF,ON = 0, 1
     def __init__(self):
-        self.yes = self.ON
+        self.yes = True
         self.npc = None
         self.step = 0
         self.string1 = "이름                                          "
@@ -408,10 +407,11 @@ def update(frame_time):
 def draw(frame_time):
     clear_canvas()
     background.draw()
-    if npc_cnt >2:
-        for npc in npc_group:
-            npc.draw()
+    for npc in npc_group:
+        npc.draw()
+        #npc.draw_bb()
     boy.draw()
+    #boy.draw_bb()
     status_image.draw(180,540)
     font.draw_unicode(35 , 570, '체력: %3d'%boy.hp + ' / %3d'%boy.maxhp + '    혐의: %4d'%boy.suspicion + '%    현위치:  '+boy.place)
     font.draw_unicode(35 , 540, '   돈:  %5d'%boy.gold  + '원      주사위최댓값: %3d'%boy.dice_num)

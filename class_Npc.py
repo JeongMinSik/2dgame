@@ -4,7 +4,7 @@ import random
 class Npc:
     DOWN, UP, LEFT, RIGHT = 3, 2, 1, 0
     # 10번 할머니, 20번 할아버지 30번 소녀 40번 소년 50번 젊은여성 60번 젊은남성 70번 경찰
-    GRANDMA,GRANDPA,GIRL,BOY,WOMAN,MAN= 1,2,3,4,5,6
+    GRANDMA,GRANDPA,GIRL,BOY,WOMAN,MAN,POLICE= 1,2,3,4,5,6,70
     OFF,ON = 0 ,1
     def __init__(self,x,y,user,bg,npc_group=None,police=None):
         self.x, self.y = x, y
@@ -24,7 +24,7 @@ class Npc:
         if police == None:
             self.select_type() # 타입지정
         else:
-            self.type = 70
+            self.type = self.POLICE
             self.type_s="경찰"
             self.speech = "\"이 마을의 치안은 저한테 맡기세요!\"                 "
         if   self.type == 10:     self.image = load_image('Npc/oldwoman_0.png')
@@ -172,7 +172,7 @@ class Npc:
           return True
 
     def check_police_place(self):
-        if self.type == 70:
+        if self.type == self.POLICE:
             if self.y >= 720:   self.place = 'N'
             elif self.y <= 392: self.place = 'S'
             else:

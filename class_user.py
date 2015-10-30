@@ -3,6 +3,8 @@ from pico2d import *
 class User:
     image = None
     RIGHT,LEFT,UP,DOWN = 0, 1, 2, 3
+    HP_PER_STEPS = 70
+
 
     PIXEL_PER_METER = (8.0 / 1)           # 10 pixel 30 cm
     RUN_SPEED_KMPH = 20.0                    # Km / Hour
@@ -40,7 +42,10 @@ class User:
             User.image = load_image('Npc/user.png')
 
     def get_bb(self):
-        return self.x -7,self.y-14,self.x+7, self.y
+        return self.x -7,self.y-14,self.x+7, self.y-6
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_bb())
 
     def collide(self,user):
           left_a, bottom_a, right_a, top_a = self.get_bb()
@@ -177,7 +182,7 @@ class User:
         self.npc_group=npc_group
 
     def stepbystep(self):
-        if self.step_cnt >= 70:
+        if self.step_cnt >= self.HP_PER_STEPS:
             if self.hp > 1:     self.hp -=1
             self.step_cnt = 0
             return 1

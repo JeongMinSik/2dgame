@@ -9,7 +9,7 @@ import class_cursor
 class Criminal_Tool:
     HAMMER,CHAIN,SPANNER,KNIFE = 1,2,3,4
     IDLE, FIRST_SELECTED,SECOND_SELECTED,GRABBED = 0, 1, 2, 3
-    check_state=0 ## 십의 자리는 첫번째칸, 일의 자리는 두번째칸
+    check_state=0 ## 십의 자리는 첫번째칸, 일의 자리는 두번째칸에 적재된 도구를 의미한다.
     tool_cnt=[0,0,0,0,0] # 0번째칸은 쓰지 않는다, 1~4는 각 도구의 사용 수
     def __init__(self,type):
         self.type = type
@@ -28,7 +28,7 @@ class Criminal_Tool:
             self.x,self.y = 210,318
 
     def get_bb(self):
-        return self.x -60,self.y-60,self.x+60, self.y+60  # 120x120
+        return self.x -60,self.y-60,self.x+60, self.y+60
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -57,7 +57,7 @@ class Dice_Number:
             Dice_Number.image=load_image('Battle_State/dice_num.png')
 
     def get_bb(self):
-        return self.x -50,self.y-50,self.x+50, self.y+50  # 100x100
+        return self.x -50,self.y-50,self.x+50, self.y+50
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -166,7 +166,7 @@ class Textbox:
         self.string4 = " "
         self.tool_check1= "  망치   x0      쇠사슬 x0        "
         self.tool_check2=  "스패너  x0        칼   x0        "
-        self.wait=0
+        self.wait=0 # 0: 기본, 1: 도구에 대한 설명이 출력중일때
         if Textbox.image == None:
             Textbox.image=load_font('nanumfont.ttf')
 
@@ -285,7 +285,7 @@ class Number:
             else:
                 self.result_one_x,self.result_one_y= 790,200
 
-            self.switch +=1
+            self.switch =1
 
         if battle_step == STEP_TURN_END and self.switch == 1:
             text_box.string1 = "                               "
@@ -384,13 +384,13 @@ STEP_ENEMY_TURN, STEP_USER_TURN, STEP_SELECT_TOOLS, STEP_CHECK_RESULT, STEP_TURN
 battle_step=STEP_ENEMY_TURN
 Player= None
 """
-step0 : 처음 시작
-step1 : 적의 공격값 제시, 주사위 굴러감
-step2 : 주사위 값 나옴, 연산기호선택
+step0 : 적 차례 (적 공격값 랜덤 중)
+step1 : 내 차례 (유저 주사위값 랜덤 중)
+step2 : 연산기호 결정
 step3 : 결과값 나옴(디스플레이)
-step4 : 결과값에 따른 체력 적용, 사용한 총 범행도구 수 확인
+step4 : 결과에 따른 체력적용, 턴 종료
 -> 전투가 끝나지 않았으면 다시 1로
--> 전투 끝(step5)
+-> 전투 끝 (step5)
 step5 전투종료 (승리 혹은 패배)
 """
 
@@ -414,19 +414,7 @@ def enter(user,npc):
 
 
 def exit():
-    global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp
-    del(ground_image)
-    del(text_image)
-    for tool in tool_group:
-        del(tool)
-    for dice in dice_group:
-        del(dice)
-    for ani in ani_group:
-        del(ani)
-    del(enemy)
-    del(textbox)
-    del(number)
-    del(hp)
+   pass #객체를 지우면 에러가 발생한다. 어떤 메카닉으로 작동하는지 모르겠다. 나중에 여쭤봐야겠다.
 
 def pause():
     pass
@@ -461,7 +449,7 @@ def handle_events(frame_time):
                         battle_step +=1
                     else:
                         initialize_turn()
-                elif battle_step == STEP_BATTLE_END: #결과창 떠있는 상태
+                elif battle_step == STEP_BATTLE_END:
                     initialize_turn()
                     game_framework.pop_state()
         if(event.type == SDL_MOUSEMOTION):
@@ -532,7 +520,7 @@ def handle_events(frame_time):
                     second_box_type = int(Criminal_Tool.check_state % 10) # 두번째 연산기호 (일의 자리)
                     textbox.wait=0
                     if first_box_type == 0 and toolbox == 1 and (tool.type < tool.SPANNER or tool.type !=second_box_type): # 첫번째칸이 비었고, 첫번째 안에서 마우스버튼을 떼었을 때
-                        tool.state = tool.FIRST_SELECTED #첫번째 캄
+                        tool.state = tool.FIRST_SELECTED #첫번째 칸
                         tool.x, tool.y = 203, 185
                         Criminal_Tool.check_state +=10*tool.type
                         tool_group.append(Criminal_Tool(tool.type))
@@ -630,7 +618,7 @@ def battle_lose():
     textbox.string2 = "혐의가 대폭 증가합니다.                             "
     textbox.string3 = "병원으로 이송되었습니다.                            "
     textbox.string4 = "혐의 +"+"%3d"%(enemy.type * 4) + "%                "
-    Player.x,Player.y,Player.state = 256,224,Player.Down
+    Player.x,Player.y,Player.state = 256,224,Player.DOWN
     Player.hp= 20 # 죽으면 체력은 20으로 (20을 채우는 비용 < 혐의 4퍼 낮추는 비용)
     Player.suspicion += (enemy.type * 4)
 
