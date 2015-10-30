@@ -9,9 +9,9 @@ image = None
 
 def enter(object1=None,object2=None):
     global back_image,space_image, name_image, opacify_time,change, name_x, cursor
-    back_image = load_image('title_01.png')
-    space_image = load_image('space_bar.png')
-    name_image = load_image('title_name_2.png')
+    back_image = load_image('Title/title_01.png')
+    space_image = load_image('Title/space_bar.png')
+    name_image = load_image('Title/title_name_2.png')
     opacify_time, change=0, 1
     name_x = 1500
     cursor=class_cursor.Cursor()

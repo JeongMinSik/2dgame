@@ -4,7 +4,7 @@ from pico2d import *
 class FixedBackground:
 
     def __init__(self, boy):
-        self.image = load_image('final_map_test2.png')
+        self.image = load_image('Main_Map/final_map_test2.png')
         self.speed = 0
         self.left = 0
         self.bottom = 0
@@ -142,8 +142,6 @@ class FixedBackground:
     def update(self):
         self.left = clamp(0, int(self.center_object.x) - self.canvas_width//2, self.w - self.canvas_width)
         self.bottom = clamp (0, int(self.center_object.y) - self.canvas_height//2, self.h - self.canvas_height)
-
-   # def handle_event(self, event):
 
 
 
