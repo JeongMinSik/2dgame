@@ -6,8 +6,8 @@ class User:
     HP_PER_STEPS = 70
 
 
-    PIXEL_PER_METER = (8.0 / 1)           # 10 pixel 30 cm
-    RUN_SPEED_KMPH = 20.0                    # Km / Hour
+    PIXEL_PER_METER = (8 / 1)           # 10 pixel 30 cm
+    RUN_SPEED_KMPH = 60.0                    # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -15,6 +15,8 @@ class User:
     TIME_PER_ACTION = 0.5
     ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
     FRAMES_PER_ACTION = 3
+
+    DISTANCE = 8
 
     def __init__(self):
         self.x, self.y = -1,-1
@@ -66,43 +68,43 @@ class User:
         if self.suspicion > 100:
             self.suspicion=100
 
-    def move(self):
+    def move(self,frame_time):
         if self.running == True:
             self.frame = (self.frame +1) % 3
             if self.state == self.RIGHT:
-                self.x += 8
+                self.x += User.DISTANCE
                 self.step_cnt +=1
                 for npc in self.npc_group:
-                    if self.collide(npc) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.x -= 8
+                    if self.collide(npc) or self.bg.map_matrix[int(self.y / User.DISTANCE)][int(self.x / User.DISTANCE)] != 0:
+                        self.x -= User.DISTANCE
                         self.step_cnt -=1
                         break
             elif self.state == self.LEFT:
-                self.x -= 8
+                self.x -= User.DISTANCE
                 self.step_cnt +=1
                 for npc in self.npc_group:
-                    if self.collide(npc) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.x += 8
+                    if self.collide(npc) or self.bg.map_matrix[int(self.y / User.DISTANCE)][int(self.x / User.DISTANCE)] != 0:
+                        self.x += User.DISTANCE
                         self.step_cnt -=1
                         break
             elif self.state == self.UP:
-                self.y += 8
-                self.x += 8
+                self.y += User.DISTANCE
+                self.x += User.DISTANCE
                 self.step_cnt +=1
                 for npc in self.npc_group:
-                    if self.collide(npc) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                       self.y -= 8
-                       self.x -= 8
+                    if self.collide(npc) or self.bg.map_matrix[int(self.y / User.DISTANCE)][int(self.x / User.DISTANCE)] != 0:
+                       self.y -= User.DISTANCE
+                       self.x -= User.DISTANCE
                        self.step_cnt -=1
                        break
             elif self.state == self.DOWN:
-                self.y -= 8
-                self.x -= 8
+                self.y -= User.DISTANCE
+                self.x -= User.DISTANCE
                 self.step_cnt +=1
                 for npc in self.npc_group:
-                    if self.collide(npc) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.y += 8
-                        self.x += 8
+                    if self.collide(npc) or self.bg.map_matrix[int(self.y / User.DISTANCE)][int(self.x / User.DISTANCE)] != 0:
+                        self.y += User.DISTANCE
+                        self.x += User.DISTANCE
                         self.step_cnt -=1
                         break
         else:
@@ -127,7 +129,7 @@ class User:
 
     def update(self,frame_time):
         self.max_value()
-        self.move()
+        self.move(frame_time)
         self.check_user_place()
 
         ##############(개발용) 캐릭터가 서 있는 좌표의 배열값을 0 또는 1로 변경#############

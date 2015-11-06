@@ -9,23 +9,29 @@ import class_cursor
 class Criminal_Tool:
     HAMMER,CHAIN,SPANNER,KNIFE = 1,2,3,4
     IDLE, FIRST_SELECTED,SECOND_SELECTED,GRABBED = 0, 1, 2, 3
-    check_state=0 ## 십의 자리는 첫번째칸, 일의 자리는 두번째칸에 적재된 도구를 의미한다.
+    check_state=0 ## 십의 자리는 첫번째칸, 일의 자리는 두번째칸에 적재된 범행도구를 의미한다.
     tool_cnt=[0,0,0,0,0] # 0번째칸은 쓰지 않는다, 1~4는 각 도구의 사용 수
     def __init__(self,type):
+        tool_data_file = open('Data/Criminal_Tool.txt','r')
+        tool_data = json.load(tool_data_file)
+        tool_data_file.close()
+        self.First_x,self.First_y = tool_data['FirstSelectedPos']['x'],tool_data['FirstSelectedPos']['y']
+        self.Second_x,self.Second_y = tool_data['SecondSelectedPos']['x'],tool_data['SecondSelectedPos']['y']
         self.type = type
         self.state = self.IDLE
+
         if self.type == self.HAMMER:
             self.image=load_image('Battle_State/tool_hammer.png')
-            self.x,self.y = 83,443
+            self.x,self.y = tool_data['Hammer']['x'],tool_data['Hammer']['y']
         elif self.type == self.CHAIN:
             self.image=load_image('Battle_State/tool_chain.png')
-            self.x,self.y = 210,443
+            self.x,self.y = tool_data['Chain']['x'],tool_data['Chain']['y']
         elif self.type == self.SPANNER:
             self.image=load_image('Battle_State/tool_spanner.png')
-            self.x,self.y = 83,318
+            self.x,self.y = tool_data['Spanner']['x'],tool_data['Spanner']['y']
         elif self.type == self.KNIFE :
             self.image=load_image('Battle_State/tool_knife.png')
-            self.x,self.y = 210,318
+            self.x,self.y = tool_data['Knife']['x'],tool_data['Knife']['y']
 
     def get_bb(self):
         return self.x -60,self.y-60,self.x+60, self.y+60
@@ -43,16 +49,19 @@ class Dice_Number:
     image = None
     First,Second,Third=0,1,2
     def __init__(self,position,player_max):
+        number_data_file = open('Data/Dice_Number.txt','r')
+        number_data = json.load(number_data_file)
+        number_data_file.close()
         self.x,self.y = 0,0
         self.position = position
         self.frame = 0
         self.max = player_max
         if self.position == self.First:
-            self.x,self.y = 73,185
+            self.x,self.y = number_data['First']['x'],number_data['First']['y']
         elif self.position == self.Second:
-            self.x,self.y = 331,185
+            self.x,self.y = number_data['Second']['x'],number_data['Second']['y']
         elif self.position == self.Third:
-            self.x,self.y = 586,185
+            self.x,self.y = number_data['Third']['x'],number_data['Third']['y']
         if Dice_Number.image == None:
             Dice_Number.image=load_image('Battle_State/dice_num.png')
 
@@ -74,15 +83,18 @@ class Dice_Animation:
     image = None
     First,Second,Third=0,1,2
     def __init__(self,position):
+        number_data_file = open('Data/Dice_Number.txt','r')
+        number_data = json.load(number_data_file)
+        number_data_file.close()
         self.x,self.y = 0,0
         self.position = position
         self.frame = random.randint(0,8)
         if self.position == self.First:
-            self.x,self.y = 73,185
+            self.x,self.y = number_data['First']['x'],number_data['First']['y']
         elif self.position == self.Second:
-            self.x,self.y = 331,185
+            self.x,self.y = number_data['Second']['x'],number_data['Second']['y']
         elif self.position == self.Third:
-            self.x,self.y = 586,185
+            self.x,self.y = number_data['Third']['x'],number_data['Third']['y']
         if Dice_Animation.image == None:
             Dice_Animation.image=load_image('Battle_State/dice_animation.png')
 
@@ -102,51 +114,54 @@ class Dice_Animation:
 class Enemy:
     GRANDMA, GRANDPA, GIRL, BOY, WOMAN, MAN, POLICE = 1, 2, 3, 4, 5, 6, 7
     def __init__(self,npc):
-        self.x,self.y=600,360
+        enemy_data_file = open('Data/Enemy.txt','r')
+        enemy_data = json.load(enemy_data_file)
+        enemy_data_file.close()
+        self.x,self.y=enemy_data['Position']['x'],enemy_data['Position']['y']
         self.type = (int)(npc.type /10)
         self.type_s = npc.type_s
 
         if self.type == self.GRANDMA:
-            self.hp= random.randint(10,16)
-            self.min=1
-            self.max=3
-            self.gold=150
+            self.hp= random.randint(enemy_data['Grandma']['hpmin'],enemy_data['Grandma']['hpmax'])
+            self.min=enemy_data['Grandma']['attackmin']
+            self.max=enemy_data['Grandma']['attackmax']
+            self.gold=enemy_data['Grandma']['gold']
             self.image = load_image('Battle_State/battle_grandma2.png')
         elif self.type == self.GRANDPA:
-            self.hp= random.randint(13,19)
-            self.min=1
-            self.max=5
-            self.gold=300
+            self.hp= random.randint(enemy_data['Grandpa']['hpmin'],enemy_data['Grandpa']['hpmax'])
+            self.min=enemy_data['Grandpa']['attackmin']
+            self.max=enemy_data['Grandpa']['attackmax']
+            self.gold=enemy_data['Grandpa']['gold']
             self.image = load_image('Battle_State/battle_grandpa2.png')
         elif self.type == self.GIRL:
-            self.hp= random.randint(17,23)
-            self.min=3
-            self.max=6
-            self.gold=500
+            self.hp= random.randint(enemy_data['Girl']['hpmin'],enemy_data['Girl']['hpmax'])
+            self.min=enemy_data['Girl']['attackmin']
+            self.max=enemy_data['Girl']['attackmax']
+            self.gold=enemy_data['Girl']['gold']
             self.image = load_image('Battle_State/battle_girl2.png')
         elif self.type == self.BOY:
-            self.hp= random.randint(22,28)
-            self.min=5
-            self.max=9
-            self.gold=750
+            self.hp= random.randint(enemy_data['Boy']['hpmin'],enemy_data['Boy']['hpmax'])
+            self.min=enemy_data['Boy']['attackmin']
+            self.max=enemy_data['Boy']['attackmax']
+            self.gold=enemy_data['Boy']['gold']
             self.image = load_image('Battle_State/battle_boy2.png')
         elif self.type == self.WOMAN:
-            self.hp= random.randint(28,34)
-            self.min=7
-            self.max=12
-            self.gold=1100
+            self.hp= random.randint(enemy_data['Woman']['hpmin'],enemy_data['Woman']['hpmax'])
+            self.min=enemy_data['Woman']['attackmin']
+            self.max=enemy_data['Woman']['attackmax']
+            self.gold=enemy_data['Woman']['gold']
             self.image = load_image('Battle_State/battle_woman2.png')
         elif self.type == self.MAN:
-            self.hp= random.randint(35,40)
-            self.min=9
-            self.max=15
-            self.gold=1500
+            self.hp= random.randint(enemy_data['Man']['hpmin'],enemy_data['Man']['hpmax'])
+            self.min=enemy_data['Man']['attackmin']
+            self.max=enemy_data['Man']['attackmax']
+            self.gold=enemy_data['Man']['gold']
             self.image = load_image('Battle_State/battle_man2.png')
         elif self.type == self.POLICE:
-            self.hp= 99
-            self.min=12
-            self.max=20
-            self.gold=2000
+            self.hp= enemy_data['Police']['hp']
+            self.min=enemy_data['Police']['attackmin']
+            self.max=enemy_data['Police']['attackmax']
+            self.gold=enemy_data['Police']['gold']
             self.image = load_image('Battle_State/battle_police2.png')
         self.set_attack_value()
 
@@ -159,6 +174,12 @@ class Enemy:
 class Textbox:
     image = None
     def __init__(self):
+        #원인을 알 수 없는 버그 : json을 열기만 하면 문자열이 보이지 않음
+        #text_data_file = open('Data/Battle_textbox_number_hp.txt','r')
+        #text_data = json.load(text_data_file)
+        #text_data_file.close()
+        #self.x,self.y= text_data['TextPosition']['x'], text_data['TextPosition']['y']
+        #self.tool_check_x,self.tool_check_y =  text_data['ToolCheckPosition']['x'],text_data['ToolCheckPosition']['y']
         self.x,self.y= 875,430
         self.string1 = " "
         self.string2 = " "
@@ -221,6 +242,13 @@ class Textbox:
 class Number:
     image=None
     def __init__(self):
+        number_data_file = open('Data/Battle_textbox_number_hp.txt','r')
+        number_data = json.load(number_data_file)
+        number_data_file.close()
+        self.enem_pos_1_x,self.enem_pos_1_y=number_data['AttackNumber_1']['Enemy_x'], number_data['AttackNumber_1']['Enemy_y']
+        self.enem_pos_10_x,self.enem_pos_10_y=number_data['AttackNumber_10']['Enemy_x'], number_data['AttackNumber_10']['Enemy_y']
+        self.user_pos_1_x,self.user_pos_1_y=number_data['AttackNumber_1']['User_x'], number_data['AttackNumber_1']['User_y']
+        self.user_pos_10_x,self.user_pos_10_y=number_data['AttackNumber_10']['User_x'], number_data['AttackNumber_10']['User_y']
         self.switch = 0 # 계산을 한번만 하기 위한 스위치
         self.enem_one=self.enem_one_x=self.enem_one_y=self.enem_ten=self.result_one=self.result_ten=self.result_one_x=self.result_one_y=0
         if Number.image == None:
@@ -237,9 +265,9 @@ class Number:
 
         # 자리수에 따른 좌표 결정
         if(self.enem_ten == 0):
-            self.enem_one_x,self.enem_one_y= 604,533
+            self.enem_one_x,self.enem_one_y= self.enem_pos_1_x,self.enem_pos_1_y
         else:
-            self.enem_one_x,self.enem_one_y= 620,533
+            self.enem_one_x,self.enem_one_y= self.enem_pos_10_x,self.enem_pos_10_y
 
         if battle_step == STEP_CHECK_RESULT and self.switch == 0:
             n1,n2,n3=dice_group[0].frame,dice_group[1].frame,dice_group[2].frame
@@ -281,9 +309,9 @@ class Number:
             self.result_one = (int)(self.result % 10) #일의 자리
             self.result_ten = (int)(self.result / 10) #십의 자리
             if self.result_ten == 0:
-                self.result_one_x,self.result_one_y= 770,200
+                self.result_one_x,self.result_one_y= self.user_pos_1_x,self.user_pos_1_y
             else:
-                self.result_one_x,self.result_one_y= 790,200
+                self.result_one_x,self.result_one_y= self.user_pos_10_x,self.user_pos_10_y
 
             self.switch =1
 
@@ -348,6 +376,11 @@ class Number:
 class Hp:
     user_image=enem_image=None
     def __init__(self,player,enem):
+        hp_data_file = open('Data/Battle_textbox_number_hp.txt','r')
+        hp_data = json.load(hp_data_file)
+        hp_data_file.close()
+        self.enem_pos_x,self.enem_pos_y = hp_data['EnemyHp']['x'],hp_data['EnemyHp']['y']
+        self.user_pos_x,self.user_pos_y = hp_data['UserHp']['x'],hp_data['UserHp']['y']
         self.enem_hp_one = int(enem.hp % 10)
         self.enem_hp_ten = int(enem.hp / 10)
         self.user_hp_one = int(player.hp % 10)
@@ -366,14 +399,14 @@ class Hp:
 
     def draw(self):
         if(self.enem_hp_ten > 0):
-                self.enem_image.clip_draw(self.enem_hp_ten * 60, 0, 60, 67, 735,410)
-                self.enem_image.clip_draw(self.enem_hp_one * 60, 0, 60, 67, 795,410)
+                self.enem_image.clip_draw(self.enem_hp_ten * 60, 0, 60, 67, self.enem_pos_x-60,self.enem_pos_y)
+                self.enem_image.clip_draw(self.enem_hp_one * 60, 0, 60, 67, self.enem_pos_x,self.enem_pos_y)
         else:
-            self.enem_image.clip_draw(self.enem_hp_one * 60, 0, 60, 67, 760,410)
+            self.enem_image.clip_draw(self.enem_hp_one * 60, 0, 60, 67, self.enem_pos_x-35,self.enem_pos_y)
 
         if(self.user_hp_ten > 0):
-            self.user_image.clip_draw(self.user_hp_ten * 100, 0, 100, 128, 1011, 72)
-        self.user_image.clip_draw(self.user_hp_one * 100, 0, 100, 128, 1111, 72)
+            self.user_image.clip_draw(self.user_hp_ten * 100, 0, 100, 128, self.user_pos_x-100,self.user_pos_y)
+        self.user_image.clip_draw(self.user_hp_one * 100, 0, 100, 128, self.user_pos_x,self.user_pos_y)
 
 
 ###############################################################
@@ -381,7 +414,10 @@ name = "BattleState"
 image = None
 text_image = None
 STEP_ENEMY_TURN, STEP_USER_TURN, STEP_SELECT_TOOLS, STEP_CHECK_RESULT, STEP_TURN_END, STEP_BATTLE_END= 0,1,2,3,4,5
+HOSPITAL_X,HOSPITAL_Y = 256,224
+HOSPITAL_HP = 20
 battle_step=STEP_ENEMY_TURN
+TEXT_BOX_X,TEXT_BOX_Y = 1018,383
 Player= None
 """
 step0 : 적 차례 (적 공격값 랜덤 중)
@@ -432,7 +468,6 @@ def handle_events(frame_time):
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
                 game_framework.quit()
-                #버튼키를 누를 때
             elif event.key == SDLK_z:
                 if(battle_step < STEP_SELECT_TOOLS):
                     battle_step +=1
@@ -462,20 +497,18 @@ def handle_events(frame_time):
                 else:
                     cursor.state = cursor.IDLE
             for tool in tool_group:
-                if tool.state == tool.GRABBED: # 잡은 상태에서 드래그
+                if tool.state == tool.GRABBED:
                     cursor.state = cursor.ROCK
                     tool.x=event.x
                     tool.y=600-event.y
-        #마우스 버튼 클릭
         if(event.type == SDL_MOUSEBUTTONDOWN):
-            #왼쪽
             if (event.button == SDL_BUTTON_LEFT) and ( int(Criminal_Tool.check_state / 10)==0 or int(Criminal_Tool.check_state % 10)==0):
                 for tool in tool_group:
                     if battle_step == STEP_SELECT_TOOLS and collide(event.x,600-event.y,tool) and tool.state == tool.IDLE:
                         cursor.state=cursor.ROCK
                         tool.x=event.x
                         tool.y= 600-event.y
-                        tool.state = tool.GRABBED # 잡은 상태
+                        tool.state = tool.GRABBED
                         if tool.type == tool.HAMMER:
                             textbox.wait = 1
                             textbox.string1 = " [망치]                            "
@@ -500,17 +533,15 @@ def handle_events(frame_time):
                             textbox.string2 = "     '작은수~큰수' 사이 모든 수의 합            "
                             textbox.string3 = "     연산우선순위 1번째                     "
                             textbox.string4 = "칼은 한 턴에 한번만 사용할 수 있습니다."
-            #오른쪽
             if (event.button == SDL_BUTTON_RIGHT):
                  for tool in tool_group:
                     if battle_step == STEP_SELECT_TOOLS and collide(event.x,600-event.y,tool):
-                        if tool.state == tool.FIRST_SELECTED: #첫번째 칸을 오른쪽클릭
+                        if tool.state == tool.FIRST_SELECTED:
                             Criminal_Tool.check_state -=10*tool.type
                             tool_group.remove(tool)
                         elif tool.state == tool.SECOND_SELECTED:
                             Criminal_Tool.check_state -=tool.type
                             tool_group.remove(tool)
-        #마우스 왼쪽 버튼을 떼었을 때
         elif(event.type == SDL_MOUSEBUTTONUP and event.button ==SDL_BUTTON_LEFT and event.button !=SDL_BUTTON_RIGHT):
             cursor.state=cursor.IDLE
             for tool in tool_group:
@@ -521,12 +552,12 @@ def handle_events(frame_time):
                     textbox.wait=0
                     if first_box_type == 0 and toolbox == 1 and (tool.type < tool.SPANNER or tool.type !=second_box_type): # 첫번째칸이 비었고, 첫번째 안에서 마우스버튼을 떼었을 때
                         tool.state = tool.FIRST_SELECTED #첫번째 칸
-                        tool.x, tool.y = 203, 185
+                        tool.x, tool.y = tool.First_x,tool.First_y
                         Criminal_Tool.check_state +=10*tool.type
                         tool_group.append(Criminal_Tool(tool.type))
                     elif second_box_type == 0 and toolbox == 2 and (tool.type < tool.SPANNER or tool.type !=first_box_type):
                             tool.state = tool.SECOND_SELECTED #두번째 칸
-                            tool.x, tool.y = 460,185
+                            tool.x, tool.y = tool.Second_x,tool.Second_y
                             Criminal_Tool.check_state +=tool.type
                             tool_group.append(Criminal_Tool(tool.type))
                     else:
@@ -542,8 +573,8 @@ def collide(mouse_x,mouse_y,object):
     return True
 
 def collide_toolbox(tool):
-    if 142 < tool.x and tool.x < 264 and 124 < tool.y and tool.y < 246: return 1 # 첫번째 칸
-    elif 400 < tool.x and tool.x < 520 and 124 < tool.y and tool.y <246 : return 2 # 두번째 칸
+    if 142 < tool.x and tool.x < 264 and 124 < tool.y and tool.y < 246: return 1 # 첫번째 기호칸
+    elif 400 < tool.x and tool.x < 520 and 124 < tool.y and tool.y <246 : return 2 # 두번째 기호칸
     else: return 0
 
 def initialize_turn():
@@ -572,14 +603,14 @@ def battle_win():
 
     if Criminal_Tool.tool_cnt[max_index] != 0: #완전범죄가 아닐 때
         suspicion_sum += enemy.type #기본 혐의값
-        if Player.last_tool == max_index: #지난 범죄와 같은 도구면
+        if Player.last_tool == max_index:
             suspicion_sum += enemy.type
         Player.last_tool = max_index
         if Player.last_tool == Criminal_Tool.HAMMER:            Player.tool_s = "망치"
         elif Player.last_tool == Criminal_Tool.CHAIN:            Player.tool_s = "쇠사슬"
         elif Player.last_tool == Criminal_Tool.SPANNER:            Player.tool_s = "스패너"
         elif Player.last_tool == Criminal_Tool.KNIFE:            Player.tool_s = "칼"
-        if Player.last_type == enemy.type: #지난 범죄와 같은 유형의 피해자면
+        if Player.last_type == enemy.type:
             suspicion_sum += enemy.type
         Player.last_type = enemy.type
         Player.type_s = enemy.type_s
@@ -618,8 +649,8 @@ def battle_lose():
     textbox.string2 = "혐의가 대폭 증가합니다.                             "
     textbox.string3 = "병원으로 이송되었습니다.                            "
     textbox.string4 = "혐의 +"+"%3d"%(enemy.type * 4) + "%                "
-    Player.x,Player.y,Player.state = 256,224,Player.DOWN
-    Player.hp= 20 # 죽으면 체력은 20으로 (20을 채우는 비용 < 혐의 4퍼 낮추는 비용)
+    Player.x,Player.y,Player.state = HOSPITAL_X,HOSPITAL_Y,Player.DOWN
+    Player.hp= HOSPITAL_HP # 죽으면 체력은 20으로 (20을 채우는 비용 < 혐의 4퍼 낮추는 비용)
     Player.suspicion += (enemy.type * 4)
 
 
@@ -639,7 +670,7 @@ def update(frame_time):
 def draw(frame_time):
     clear_canvas()
     ground_image.draw(600,300)
-    text_image.draw(1018,383)
+    text_image.draw(TEXT_BOX_X,TEXT_BOX_Y)
     textbox.draw()
     enemy.draw()
     for dice in dice_group:

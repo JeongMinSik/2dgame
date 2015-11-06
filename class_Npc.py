@@ -5,7 +5,19 @@ class Npc:
     DOWN, UP, LEFT, RIGHT = 3, 2, 1, 0
     # 10번 할머니, 20번 할아버지 30번 소녀 40번 소년 50번 젊은여성 60번 젊은남성 70번 경찰
     GRANDMA,GRANDPA,GIRL,BOY,WOMAN,MAN,POLICE= 1,2,3,4,5,6,70
-    OFF,ON = 0 ,1
+
+    PIXEL_PER_METER = (8 / 1)           # 10 pixel 30 cm
+    RUN_SPEED_KMPH = 60.0                    # Km / Hour
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_ACTION = 3
+
+    DISTANCE = 8
+
     def __init__(self,x,y,user,bg,npc_group=None,police=None):
         self.x, self.y = x, y
         self.npc_group =npc_group
@@ -154,7 +166,7 @@ class Npc:
 
 
     def get_bb(self):
-        return self.x -8,self.y-13,self.x+8, self.y+9  # 폭:16, 높이 22
+        return self.x -8,self.y-13,self.x+8, self.y+9
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -194,52 +206,52 @@ class Npc:
                 self.running =  False
                 self.waiting_time = 0
             if self.dir == self.RIGHT:
-                self.x+=8
+                self.x+=Npc.DISTANCE
                 for npc in self.npc_group:
-                    if (npc.type != self.type and self.collide(npc)) or self.collide(self.user) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.x-=8
+                    if (npc.type != self.type and self.collide(npc)) or self.collide(self.user) or self.bg.map_matrix[int(self.y / Npc.DISTANCE)][int(self.x / Npc.DISTANCE)] != 0:
+                        self.x-=Npc.DISTANCE
                         self.frame = 0
                         return
                 self.state = self.RIGHT
                 self.frame = self.frame = (self.frame +1) % 3
             elif self.dir == self.LEFT:
-                self.x-=8
+                self.x-=Npc.DISTANCE
                 #병원 주변에는 못 가도록
                 if self.x <=320 and self.y >= 200 and self.y <=240:
-                    self.x += 8
+                    self.x += Npc.DISTANCE
                     self.frame = 0
                     return
                 for npc in self.npc_group:
-                    if (npc.type != self.type and self.collide(npc)) or  self.collide(self.user) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.x += 8
+                    if (npc.type != self.type and self.collide(npc)) or  self.collide(self.user) or self.bg.map_matrix[int(self.y / Npc.DISTANCE)][int(self.x / Npc.DISTANCE)] != 0:
+                        self.x += Npc.DISTANCE
                         self.frame = 0
                         return
                 self.state = self.LEFT
                 self.frame = self.frame = (self.frame +1) % 3
             elif self.dir == self.UP:
-                self.x+=8
-                self.y+=8
+                self.x+=Npc.DISTANCE
+                self.y+=Npc.DISTANCE
                 for npc in self.npc_group:
-                    if (npc.type != self.type and self.collide(npc)) or  self.collide(self.user) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.y -= 8
-                        self.x -= 8
+                    if (npc.type != self.type and self.collide(npc)) or  self.collide(self.user) or self.bg.map_matrix[int(self.y / Npc.DISTANCE)][int(self.x / Npc.DISTANCE)] != 0:
+                        self.y -= Npc.DISTANCE
+                        self.x -= Npc.DISTANCE
                         self.frame = 0
                         return
                 for ent in entrance_group:
                     if self.collide(ent):
-                        self.y -= 8
-                        self.x -= 8
+                        self.y -= Npc.DISTANCE
+                        self.x -= Npc.DISTANCE
                         self.frame = 0
                         return
                 self.state = self.UP
                 self.frame = self.frame = (self.frame +1) % 3
             elif self.dir ==self.DOWN:
-                self.x-=8
-                self.y-=8
+                self.x-=Npc.DISTANCE
+                self.y-=Npc.DISTANCE
                 for npc in self.npc_group:
-                    if (npc.type != self.type and self.collide(npc)) or self.collide(self.user) or self.bg.map_matrix[int(self.y / 8)][int(self.x / 8)] != 0:
-                        self.y += 8
-                        self.x += 8
+                    if (npc.type != self.type and self.collide(npc)) or self.collide(self.user) or self.bg.map_matrix[int(self.y / Npc.DISTANCE)][int(self.x / Npc.DISTANCE)] != 0:
+                        self.y += Npc.DISTANCE
+                        self.x += Npc.DISTANCE
                         self.frame = 0
                         return
                 self.state = self.DOWN

@@ -31,7 +31,7 @@ class Entrance:
         elif self.type == self.POLICE_STATION:
             self.x,self.y = 1136,224
         elif self.type == self.CITY_HALL:
-            self.x,self.y = 776,584
+            self.x,self.y = 776,580
         elif self.type == self.HOTEL:
             self.x,self.y = 1160,512
         elif self.type == self.EMPTY_HOUSE1:
@@ -412,6 +412,7 @@ def draw(frame_time):
         #npc.draw_bb()
     boy.draw()
     #boy.draw_bb()
+
     status_image.draw(180,540)
     font.draw_unicode(35 , 570, '체력: %3d'%boy.hp + ' / %3d'%boy.maxhp + '    혐의: %4d'%boy.suspicion + '%    현위치:  '+boy.place)
     font.draw_unicode(35 , 540, '   돈:  %5d'%boy.gold  + '원      주사위최댓값: %3d'%boy.dice_num)
