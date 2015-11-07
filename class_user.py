@@ -19,6 +19,9 @@ class User:
     DISTANCE = 8
 
     def __init__(self):
+        user_data_file = open('Data/User.txt','r')
+        user_data = json.load(user_data_file)
+        user_data_file.close()
         self.x, self.y = -1,-1
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
@@ -28,9 +31,9 @@ class User:
         self.step_cnt = 0
         self.save_state = 0 #(개발용) 0기본 1저장상태 2삭제상태
 
-        self.hp = self.maxhp = 20
-        self.gold=3000
-        self.dice_num=3
+        self.hp = self.maxhp = user_data['User']['maxhp']
+        self.gold=user_data['User']['gold']
+        self.dice_num=user_data['User']['dice']
         self.suspicion=0
         self.place=''
 
@@ -113,19 +116,22 @@ class User:
         self.y = clamp(0,self.y,self.bg.h)
 
     def check_user_place(self):
-        if self.y >= 720:   self.place = 'N'
-        elif self.y <= 392: self.place = 'S'
+        place_data_file = open('Data/Place.txt','r')
+        place_data = json.load(place_data_file)
+        place_data_file.close()
+        if self.y >= place_data['North']['y']:   self.place = 'N'
+        elif self.y <= place_data['South']['y']: self.place = 'S'
         else:
-            temp_x, temp_y = 1168, 720
-            while temp_y > 392:
+            temp_x, temp_y = place_data['East_West']['x'], place_data['North']['y']
+            while temp_y > place_data['South']['y']:
                 if self.x >temp_x and self.y == temp_y:
                     self.place = 'E'
                     break
                 elif self.x <= temp_x and self.y == temp_y:
                     self.place = 'W'
                     break
-                temp_x -=8
-                temp_y -=8
+                temp_x -=User.DISTANCE
+                temp_y -=User.DISTANCE
 
     def update(self,frame_time):
         self.max_value()
@@ -141,41 +147,41 @@ class User:
 
     def check_front(self,main_text):
         if self.state == self.RIGHT:
-            self.x += 8
+            self.x += User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
                     npc.state = npc.LEFT
                     main_text.npc =npc
                     self.running =False
-            self.x -= 8
+            self.x -= User.DISTANCE
         elif self.state == self.LEFT:
-            self.x -= 8
+            self.x -= User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
                     npc.state = npc.RIGHT
                     main_text.npc =npc
                     self.running =False
-            self.x += 8
+            self.x += User.DISTANCE
         elif self.state == self.UP:
-            self.y += 8
-            self.x += 8
+            self.y += User.DISTANCE
+            self.x += User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
                     npc.state = npc.DOWN
                     main_text.npc =npc
                     self.running =False
-            self.y -= 8
-            self.x -= 8
+            self.y -= User.DISTANCE
+            self.x -= User.DISTANCE
         elif self.state == self.DOWN:
-            self.y -= 8
-            self.x -= 8
+            self.y -= User.DISTANCE
+            self.x -= User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
                     npc.state = npc.UP
                     main_text.npc =npc
                     self.running =False
-            self.y += 8
-            self.x += 8
+            self.y += User.DISTANCE
+            self.x += User.DISTANCE
 
     def set_background(self,bg):
         self.bg=bg

@@ -20,28 +20,31 @@ class Entrance:
         self.police_price=0
         self.dice_price=0
 
+        ent_data_file = open('Data/Entrance.txt','r')
+        ent_data = json.load(ent_data_file)
+        ent_data_file.close()
         if self.type == self.HOSPITAL:
-            self.x,self.y =264,232
+            self.x,self.y =ent_data['Hospital']['x'],ent_data['Hospital']['y']
         elif self.type == self.PIZZA_SHOP:
-            self.x,self.y =560,184
+            self.x,self.y =ent_data['Pizza_Shop']['x'],ent_data['Pizza_Shop']['y']
         elif self.type == self.GAME:
-            self.x,self.y = 696,184
+            self.x,self.y = ent_data['Game']['x'],ent_data['Game']['y']
         elif self.type == self.BAKERY:
-            self.x,self.y = 976,184
+            self.x,self.y = ent_data['Bakery']['x'],ent_data['Bakery']['y']
         elif self.type == self.POLICE_STATION:
-            self.x,self.y = 1136,224
+            self.x,self.y = ent_data['Police_Station']['x'],ent_data['Police_Station']['y']
         elif self.type == self.CITY_HALL:
-            self.x,self.y = 776,580
+            self.x,self.y = ent_data['City_Hall']['x'],ent_data['City_Hall']['y']
         elif self.type == self.HOTEL:
-            self.x,self.y = 1160,512
+            self.x,self.y = ent_data['Hotel']['x'],ent_data['Hotel']['y']
         elif self.type == self.EMPTY_HOUSE1:
-            self.x,self.y = 1256,512
+            self.x,self.y = ent_data['Empty_House1']['x'],ent_data['Empty_House1']['y']
         elif self.type == self.EMPTY_HOUSE2:
-            self.x,self.y = 1352,544
+            self.x,self.y = ent_data['Empty_House2']['x'],ent_data['Empty_House2']['y']
         elif self.type == self.DRUG_STORE:
-            self.x,self.y = 720,792
+            self.x,self.y = ent_data['Drug_Store']['x'],ent_data['Drug_Store']['y']
         elif self.type == self.BURGER_SHOP:
-            self.x,self.y = 848,784
+            self.x,self.y = ent_data['Burger_Shop']['x'],ent_data['Burger_Shop']['y']
 
     def update(self,main_text):
         if self.collide(self.user):
@@ -49,6 +52,9 @@ class Entrance:
             self.user.running = False
             main_text.npc=self
             if main_text.step ==0:
+                ent_data_file = open('Data/Entrance.txt','r')
+                ent_data = json.load(ent_data_file)
+                ent_data_file.close()
                 if self.type == self.HOSPITAL:
                     main_text.step=1
                     main_text.string1 = "병원                                           "
@@ -85,10 +91,10 @@ class Entrance:
                         main_text.string2 = "주사위최댓값은 5를 초과할 수 없습니다.           "
                         main_text.string3 = "                                              "
                     else:
-                        if self.user.dice_num ==3:
-                            self.dice_price=5000
+                        if self.user.dice_num == ent_data['Double_Price']['dice']:
+                            self.dice_price=ent_data['City_Hall']['dice_price']
                         else:
-                            self.dice_price=10000
+                            self.dice_price=ent_data['City_Hall']['dice_price']*2
                         main_text.string1 = "시청                                           "
                         main_text.string2 = "주사위 최댓값 +1 비용:%5d"%self.dice_price+"원                         "
                         main_text.string3 = "주사위값을 올리시겠습니까?                         "
@@ -107,14 +113,14 @@ class Entrance:
                     main_text.string2 = "비어있는 집입니다.                          "
                     main_text.string3 = "                                        "
                 elif self.type == self.DRUG_STORE:
-                    if self.user.maxhp < 40:
-                        self.hp_price= 1000
-                    elif self.user.maxhp <60:
-                        self.hp_price= 2000
-                    elif self.user.maxhp <80:
-                        self.hp_price= 4000
-                    elif self.user.maxhp <100:
-                        self.hp_price= 8000
+                    if self.user.maxhp < ent_data['Double_Price']['hp1']:
+                        self.hp_price= ent_data['Drug_Store']['hp_price']
+                    elif self.user.maxhp <ent_data['Double_Price']['hp2']:
+                        self.hp_price= ent_data['Drug_Store']['hp_price']*2
+                    elif self.user.maxhp <ent_data['Double_Price']['hp3']:
+                        self.hp_price= ent_data['Drug_Store']['hp_price']*4
+                    elif self.user.maxhp <ent_data['Double_Price']['hp4']:
+                        self.hp_price= ent_data['Drug_Store']['hp_price']*8
                     main_text.string1 = "약국                                           "
                     main_text.string2 = "건강증진제 "+"%4d"%self.hp_price +"원 (최대Hp 10 증가)                              "
                     main_text.string3 = "구입해 복용하시겠습니까?                       "
@@ -135,28 +141,31 @@ class Entrance:
         return False
 
     def handle_event(self, main_text):
+        ent_data_file = open('Data/Entrance.txt','r')
+        ent_data = json.load(ent_data_file)
+        ent_data_file.close()
         if self.check_last_place():
             main_text.string2 = "이 건물은 최근 범행구역 안에 있으므로                      "
             main_text.string3 = "이용할 수 없습니다.                                            "
         elif self.active_type == self.PIZZA_SHOP:
-            if self.user.gold >=600 and self.user.hp != self.user.maxhp:
-                self.user.gold -=600
-                self.user.hp +=50
+            if self.user.gold >=ent_data['Pizza_Shop']['price'] and self.user.hp != self.user.maxhp:
+                self.user.gold -=ent_data['Pizza_Shop']['price']
+                self.user.hp +=ent_data['Pizza_Shop']['heal']
                 main_text.string2 = "피자를 먹고 체력 50 을 회복했습니다.                      "
                 main_text.string3 = "돈 -600원                                          "
-            elif self.user.gold < 600:
+            elif self.user.gold < ent_data['Pizza_Shop']['price'] :
                 main_text.string2 = "돈이 부족하여 피자를                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
                 main_text.string2 = "이미 체력이 최대치입니다.                           "
                 main_text.string3 = "                                                    "
         elif self.active_type == self.BAKERY:
-            if self.user.gold >=100 and self.user.hp != self.user.maxhp:
-                self.user.gold -=100
-                self.user.hp +=5
+            if self.user.gold >=ent_data['Bakery']['price'] and self.user.hp != self.user.maxhp:
+                self.user.gold -=ent_data['Bakery']['price']
+                self.user.hp +=ent_data['Bakery']['heal']
                 main_text.string2 = "크림빵을 먹고 체력 5 를 회복했습니다.                      "
                 main_text.string3 = "돈 -100원                                          "
-            elif self.user.gold < 100:
+            elif self.user.gold < ent_data['Bakery']['price']:
                 main_text.string2 = "돈이 부족하여 크림빵을                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
@@ -186,7 +195,7 @@ class Entrance:
         elif self.active_type == self.DRUG_STORE:
             if self.user.gold >= self.hp_price and self.user.maxhp !=99:
                 self.user.gold -= self.hp_price
-                self.user.maxhp +=10
+                self.user.maxhp +=ent_data['Drug_Store']['add_hp']
                 main_text.string2 = "최대체력이 10 만큼 증가했습니다!                      "
                 main_text.string3 = "돈 -"+"%4d"%self.hp_price+"원                                     "
             elif self.user.gold < self.hp_price:
@@ -196,12 +205,12 @@ class Entrance:
                 main_text.string2 = "최대 체력은 99 를 초과할 수 없습니다.                          "
                 main_text.string3 = "                                                  "
         elif self.active_type == self.BURGER_SHOP:
-            if self.user.gold >=300 and self.user.hp != self.user.maxhp:
-                self.user.gold -=300
-                self.user.hp +=20
+            if self.user.gold >=ent_data['Burger_Shop']['price'] and self.user.hp != self.user.maxhp:
+                self.user.gold -=ent_data['Burger_Shop']['price']
+                self.user.hp +=ent_data['Burger_Shop']['heal']
                 main_text.string2 = "햄버거를 먹고 체력 20 을 회복했습니다.                      "
                 main_text.string3 = "돈 -300원                                          "
-            elif self.user.gold < 300:
+            elif self.user.gold < ent_data['Burger_Shop']['price']:
                 main_text.string2 = "돈이 부족하여 햄버거를                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
@@ -283,8 +292,11 @@ def enter():
     entrance_group=[Entrance(i,boy) for i in range(11)]
 
     #초기 npc그룹 생성
+    npc_data_file = open('Data/Npc.txt','r')
+    npc_data = json.load(npc_data_file)
+    npc_data_file.close()
     npc_group =[]
-    police=class_npc.Npc(1040,472,boy,background,npc_group,1)
+    police=class_npc.Npc(npc_data['Police']['x'],npc_data['Police']['y'],boy,background,npc_group,1)
     npc_group.append(police)
 
     #초기 npc 1+9 (10명) 생성
@@ -292,7 +304,10 @@ def enter():
         for i in range(1,11):
             generate(i)
     #유저 초기위치설정
-    boy.x,boy.y = 1152,496
+    user_data_file = open('Data/User.txt','r')
+    user_data = json.load(user_data_file)
+    user_data_file.close()
+    boy.x,boy.y = user_data['User']['x'],user_data['User']['y']
 
     cursor=class_cursor.Cursor()
 
@@ -316,16 +331,16 @@ def communicate(event):
             elif event.key == SDLK_LEFT:
                 main_text.yes = 1
             if main_text.yes == 0 and event.key == SDLK_z:
-                if main_text.npc.type >=100:
-                    boy.x -=8
-                    boy.y-=8
+                if main_text.npc.type >=Entrance.HOSPITAL:
+                    boy.x -=boy.DISTANCE
+                    boy.y-=boy.DISTANCE
                     boy.state=boy.DOWN
                     for ent in entrance_group:
                         ent.active_type =0
                 main_text.npc=None
                 main_text.yes = 1
             elif main_text.yes == 1 and event.key == SDLK_z:
-                if main_text.npc.type < 100:
+                if main_text.npc.type < Entrance.HOSPITAL:
                     if boy.place == police.place and main_text.npc.type != 70:
                         main_text.string1 = "현재 이 구역은 경찰이 순찰 중이므로                      "
                         main_text.string2 = "강도질을 할 수 없습니다!                                "
@@ -359,9 +374,9 @@ def communicate(event):
                         ent.handle_event(main_text)
         elif main_text.step == 1:
             if event.key == SDLK_z:
-                if main_text.npc.type >=100:
-                    boy.x -=8
-                    boy.y-=8
+                if main_text.npc.type >=Entrance.HOSPITAL:
+                    boy.x -=boy.DISTANCE
+                    boy.y -=boy.DISTANCE
                     boy.state=boy.DOWN
                     for ent in entrance_group:
                         ent.active_type =0
@@ -451,62 +466,65 @@ def camera_view(x,y):
 def generate(generation_zone):
     global npc_cnt, npc_group
     temp_npc=class_npc.Npc(0,0,boy,background,npc_group)
+    zone_data_file = open('Data/Generate.txt','r')
+    zone_data = json.load(zone_data_file)
+    zone_data_file.close()
     if generation_zone == 1:
-        temp_npc.x, temp_npc.y = 584,784
+        temp_npc.x, temp_npc.y = zone_data['Zone1']['x'],zone_data['Zone1']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user) or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 2:
-        temp_npc.x, temp_npc.y = 1208,792
+        temp_npc.x, temp_npc.y = zone_data['Zone2']['x'],zone_data['Zone2']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 3:
-        temp_npc.x, temp_npc.y = 1728,784
+        temp_npc.x, temp_npc.y = zone_data['Zone3']['x'],zone_data['Zone3']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 4:
-        temp_npc.x, temp_npc.y = 376,456
+        temp_npc.x, temp_npc.y = zone_data['Zone4']['x'],zone_data['Zone4']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 5:
-        temp_npc.x, temp_npc.y = 616,464
+        temp_npc.x, temp_npc.y = zone_data['Zone5']['x'],zone_data['Zone5']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 6:
-        temp_npc.x, temp_npc.y = 1040,472
+        temp_npc.x, temp_npc.y = zone_data['Zone6']['x'],zone_data['Zone6']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 7:
-        temp_npc.x, temp_npc.y = 1488,472
+        temp_npc.x, temp_npc.y = zone_data['Zone7']['x'],zone_data['Zone7']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 8:
-        temp_npc.x, temp_npc.y = 280,128
+        temp_npc.x, temp_npc.y = zone_data['Zone8']['x'],zone_data['Zone8']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 9:
-        temp_npc.x, temp_npc.y = 760,120
+        temp_npc.x, temp_npc.y = zone_data['Zone9']['x'],zone_data['Zone9']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 generation_zone+=1
                 break
     if generation_zone == 10:
-        temp_npc.x, temp_npc.y = 1200,120
+        temp_npc.x, temp_npc.y = zone_data['Zone10']['x'],zone_data['Zone10']['y']
         for npc in npc_group:
             if (npc.type != temp_npc.type and temp_npc.collide(npc)) or temp_npc.collide(temp_npc.user)or camera_view(temp_npc.x,temp_npc.y):
                 del temp_npc

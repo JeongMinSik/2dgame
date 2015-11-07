@@ -19,6 +19,9 @@ class Npc:
     DISTANCE = 8
 
     def __init__(self,x,y,user,bg,npc_group=None,police=None):
+        npc_data_file = open('Data/Npc.txt','r')
+        npc_data = json.load(npc_data_file)
+        npc_data_file.close()
         self.x, self.y = x, y
         self.npc_group =npc_group
         self.bg=bg
@@ -39,54 +42,57 @@ class Npc:
             self.type = self.POLICE
             self.type_s="경찰"
             self.speech = "\"이 마을의 치안은 저한테 맡기세요!\"                 "
-        if   self.type == 10:     self.image = load_image('Npc/oldwoman_0.png')
-        elif self.type == 11:     self.image = load_image('Npc/oldwoman_1.png')
-        elif self.type == 12:     self.image = load_image('Npc/oldwoman_2.png')
-        elif self.type == 20:     self.image = load_image('Npc/oldman_0.png')
-        elif self.type == 21:     self.image = load_image('Npc/oldman_1.png')
-        elif self.type == 22:     self.image = load_image('Npc/oldman_2.png')
-        elif self.type == 23:     self.image = load_image('Npc/oldman_3.png')
-        elif self.type == 30:     self.image = load_image('Npc/girl_0.png')
-        elif self.type == 31:     self.image = load_image('Npc/girl_1.png')
-        elif self.type == 32:     self.image = load_image('Npc/girl_2.png')
-        elif self.type == 33:     self.image = load_image('Npc/girl_3.png')
-        elif self.type == 34:     self.image = load_image('Npc/girl_4.png')
-        elif self.type == 35:     self.image = load_image('Npc/girl_5.png')
-        elif self.type == 40:     self.image = load_image('Npc/boy_0.png')
-        elif self.type == 41:     self.image = load_image('Npc/boy_1.png')
-        elif self.type == 42:     self.image = load_image('Npc/boy_2.png')
-        elif self.type == 43:     self.image = load_image('Npc/boy_3.png')
-        elif self.type == 44:     self.image = load_image('Npc/boy_4.png')
-        elif self.type == 45:     self.image = load_image('Npc/boy_5.png')
-        elif self.type == 46:     self.image = load_image('Npc/boy_6.png')
-        elif self.type == 50:     self.image = load_image('Npc/woman_0.png')
-        elif self.type == 51:     self.image = load_image('Npc/woman_1.png')
-        elif self.type == 52:     self.image = load_image('Npc/woman_2.png')
-        elif self.type == 53:     self.image = load_image('Npc/woman_3.png')
-        elif self.type == 54:     self.image = load_image('Npc/woman_4.png')
-        elif self.type == 55:     self.image = load_image('Npc/woman_5.png')
-        elif self.type == 56:     self.image = load_image('Npc/woman_6.png')
-        elif self.type == 57:     self.image = load_image('Npc/woman_7.png')
-        elif self.type == 58:     self.image = load_image('Npc/woman_8.png')
-        elif self.type == 59:     self.image = load_image('Npc/woman_9.png')
-        elif self.type == 60:     self.image = load_image('Npc/man_0.png')
-        elif self.type == 61:     self.image = load_image('Npc/man_1.png')
-        elif self.type == 62:     self.image = load_image('Npc/man_2.png')
-        elif self.type == 63:     self.image = load_image('Npc/man_3.png')
-        elif self.type == 64:     self.image = load_image('Npc/man_4.png')
-        elif self.type == 65:     self.image = load_image('Npc/man_5.png')
-        elif self.type == 66:     self.image = load_image('Npc/man_6.png')
-        elif self.type == 67:     self.image = load_image('Npc/man_7.png')
-        elif self.type == 68:     self.image = load_image('Npc/man_8.png')
-        elif self.type == 69:     self.image = load_image('Npc/man_9.png')
-        elif self.type == 70:     self.image = load_image('Npc/street_police.png')
+        if   self.type == npc_data['Grandma']['rangemin']:     self.image = load_image('Npc/oldwoman_0.png')
+        elif self.type == npc_data['Grandma']['rangemin']+1:     self.image = load_image('Npc/oldwoman_1.png')
+        elif self.type == npc_data['Grandma']['rangemin']+2:     self.image = load_image('Npc/oldwoman_2.png')
+        elif self.type == npc_data['Grandpa']['rangemin']:     self.image = load_image('Npc/oldman_0.png')
+        elif self.type == npc_data['Grandpa']['rangemin']+1:     self.image = load_image('Npc/oldman_1.png')
+        elif self.type == npc_data['Grandpa']['rangemin']+2:     self.image = load_image('Npc/oldman_2.png')
+        elif self.type == npc_data['Grandpa']['rangemin']+3:     self.image = load_image('Npc/oldman_3.png')
+        elif self.type == npc_data['Girl']['rangemin']:     self.image = load_image('Npc/girl_0.png')
+        elif self.type == npc_data['Girl']['rangemin']+1:     self.image = load_image('Npc/girl_1.png')
+        elif self.type == npc_data['Girl']['rangemin']+2:     self.image = load_image('Npc/girl_2.png')
+        elif self.type == npc_data['Girl']['rangemin']+3:     self.image = load_image('Npc/girl_3.png')
+        elif self.type == npc_data['Girl']['rangemin']+4:     self.image = load_image('Npc/girl_4.png')
+        elif self.type == npc_data['Girl']['rangemin']+5:     self.image = load_image('Npc/girl_5.png')
+        elif self.type == npc_data['Boy']['rangemin']:     self.image = load_image('Npc/boy_0.png')
+        elif self.type == npc_data['Boy']['rangemin']+1:     self.image = load_image('Npc/boy_1.png')
+        elif self.type == npc_data['Boy']['rangemin']+2:     self.image = load_image('Npc/boy_2.png')
+        elif self.type == npc_data['Boy']['rangemin']+3:     self.image = load_image('Npc/boy_3.png')
+        elif self.type == npc_data['Boy']['rangemin']+4:     self.image = load_image('Npc/boy_4.png')
+        elif self.type == npc_data['Boy']['rangemin']+5:     self.image = load_image('Npc/boy_5.png')
+        elif self.type == npc_data['Boy']['rangemin']+6:     self.image = load_image('Npc/boy_6.png')
+        elif self.type == npc_data['Woman']['rangemin']:     self.image = load_image('Npc/woman_0.png')
+        elif self.type == npc_data['Woman']['rangemin']+1:     self.image = load_image('Npc/woman_1.png')
+        elif self.type == npc_data['Woman']['rangemin']+2:     self.image = load_image('Npc/woman_2.png')
+        elif self.type == npc_data['Woman']['rangemin']+3:     self.image = load_image('Npc/woman_3.png')
+        elif self.type == npc_data['Woman']['rangemin']+4:     self.image = load_image('Npc/woman_4.png')
+        elif self.type == npc_data['Woman']['rangemin']+5:     self.image = load_image('Npc/woman_5.png')
+        elif self.type == npc_data['Woman']['rangemin']+6:     self.image = load_image('Npc/woman_6.png')
+        elif self.type == npc_data['Woman']['rangemin']+7:     self.image = load_image('Npc/woman_7.png')
+        elif self.type == npc_data['Woman']['rangemin']+8:     self.image = load_image('Npc/woman_8.png')
+        elif self.type == npc_data['Woman']['rangemin']+9:     self.image = load_image('Npc/woman_9.png')
+        elif self.type == npc_data['Man']['rangemin']:     self.image = load_image('Npc/man_0.png')
+        elif self.type == npc_data['Man']['rangemin']+1:     self.image = load_image('Npc/man_1.png')
+        elif self.type == npc_data['Man']['rangemin']+2:     self.image = load_image('Npc/man_2.png')
+        elif self.type == npc_data['Man']['rangemin']+3:     self.image = load_image('Npc/man_3.png')
+        elif self.type == npc_data['Man']['rangemin']+4:     self.image = load_image('Npc/man_4.png')
+        elif self.type == npc_data['Man']['rangemin']+5:     self.image = load_image('Npc/man_5.png')
+        elif self.type == npc_data['Man']['rangemin']+6:     self.image = load_image('Npc/man_6.png')
+        elif self.type == npc_data['Man']['rangemin']+7:     self.image = load_image('Npc/man_7.png')
+        elif self.type == npc_data['Man']['rangemin']+8:     self.image = load_image('Npc/man_8.png')
+        elif self.type == npc_data['Man']['rangemin']+9:     self.image = load_image('Npc/man_9.png')
+        elif self.type == npc_data['Man']['rangemin']+10:     self.image = load_image('Npc/street_police.png')
 
     def select_type(self):
         bigtype = random.randint(1,6)
         find_switch =0 #같은 타입이 이미 존재하는걸 찾았는가?
+        npc_data_file = open('Data/Npc.txt','r')
+        npc_data = json.load(npc_data_file)
+        npc_data_file.close()
         while(1):
             if(bigtype == self.GRANDMA):
-                for i in range(10,13):
+                for i in range(npc_data['Grandma']['rangemin'],npc_data['Grandma']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -99,7 +105,7 @@ class Npc:
                     else: find_switch = 0
                 bigtype +=1
             if(bigtype ==self.GRANDPA):
-                for i in range(20,24):
+                for i in range(npc_data['Grandpa']['rangemin'],npc_data['Grandpa']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -112,7 +118,7 @@ class Npc:
                     else: find_switch=0
                 bigtype +=1
             if(bigtype ==self.GIRL):
-                for i in range(30,36):
+                for i in range(npc_data['Girl']['rangemin'],npc_data['Girl']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -125,7 +131,7 @@ class Npc:
                     else: find_switch=0
                 bigtype +=1
             if(bigtype ==self.BOY):
-                for i in range(40,47):
+                for i in range(npc_data['Boy']['rangemin'],npc_data['Boy']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -138,7 +144,7 @@ class Npc:
                     else: find_switch=0
                 bigtype +=1
             if(bigtype ==self.WOMAN):
-                for i in range(50,60):
+                for i in range(npc_data['Woman']['rangemin'],npc_data['Woman']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -151,7 +157,7 @@ class Npc:
                     else: find_switch =0
                 bigtype +=1
             if(bigtype ==self.MAN):
-                for i in range(60,70):
+                for i in range(npc_data['Man']['rangemin'],npc_data['Man']['rangemax']):
                     self.type = i
                     for npc in self.npc_group:
                         if(self.type == npc.type):
@@ -184,20 +190,23 @@ class Npc:
           return True
 
     def check_police_place(self):
+        place_data_file = open('Data/Place.txt','r')
+        place_data = json.load(place_data_file)
+        place_data_file.close()
         if self.type == self.POLICE:
-            if self.y >= 720:   self.place = 'N'
-            elif self.y <= 392: self.place = 'S'
+            if self.y >= place_data['North']['y']:   self.place = 'N'
+            elif self.y <= place_data['South']['y']: self.place = 'S'
             else:
-                temp_x, temp_y = 1168, 720
-                while temp_y > 392:
+                temp_x, temp_y = place_data['East_West']['x'], place_data['North']['y']
+                while temp_y > place_data['South']['y']:
                     if self.x >temp_x and self.y == temp_y:
                         self.place = 'E'
                         break
                     elif self.x <= temp_x and self.y == temp_y:
                         self.place = 'W'
                         break
-                    temp_x -=8
-                    temp_y -=8
+                    temp_x -=Npc.DISTANCE
+                    temp_y -=Npc.DISTANCE
 
     def move(self,frame_time,entrance_group):
         self.waiting_time += frame_time
@@ -217,7 +226,10 @@ class Npc:
             elif self.dir == self.LEFT:
                 self.x-=Npc.DISTANCE
                 #병원 주변에는 못 가도록
-                if self.x <=320 and self.y >= 200 and self.y <=240:
+                place_data_file = open('Data/Place.txt','r')
+                place_data = json.load(place_data_file)
+                place_data_file.close()
+                if self.x <=place_data['Hospital']['x'] and self.y >= place_data['Hospital']['bottom'] and self.y <=place_data['Hospital']['top']:
                     self.x += Npc.DISTANCE
                     self.frame = 0
                     return
