@@ -3,12 +3,13 @@ from pico2d import *
 import main_state
 import class_cursor
 
-
 name = "TitleState"
-image = None
 
 def enter(object1=None,object2=None):
-    global back_image,space_image, name_image, opacify_time,change, name_x, cursor
+    global back_image,space_image, name_image, opacify_time,change, name_x, cursor,bgm
+    bgm=load_music('Sound/bgm/title_bgm.mp3')
+    bgm.set_volume(70)
+    bgm.repeat_play()
     back_image = load_image('Title/title_01.png')
     space_image = load_image('Title/space_bar.png')
     name_image = load_image('Title/title_name_2.png')
@@ -17,8 +18,9 @@ def enter(object1=None,object2=None):
     cursor=class_cursor.Cursor()
 
 def exit():
-    global image
-    del(image)
+    global back_image,space_image, name_image
+    del(back_image,space_image, name_image)
+    bgm.stop()
 
 
 def pause():
@@ -43,12 +45,12 @@ def handle_events(frame_time):
                 if name_x != 365:
                     name_x =365
                 else:
-                    game_framework.change_state(main_state)
+                    game_framework.push_state(main_state)
 
 
 def update(frame_time):
     global space_image, opacify_time, change, name_x
-    opacify_time +=frame_time*change
+    opacify_time +=0.025*change
     if opacify_time >1:
         opacify_time =1
         change = -1

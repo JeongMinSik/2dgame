@@ -126,13 +126,13 @@ class Enemy:
             self.min=enemy_data['Grandma']['attackmin']
             self.max=enemy_data['Grandma']['attackmax']
             self.gold=enemy_data['Grandma']['gold']
-            self.image = load_image('Battle_State/battle_grandma2.png')
+            self.image = load_image('Battle_State/battle_grandma3.png')
         elif self.type == self.GRANDPA:
             self.hp= random.randint(enemy_data['Grandpa']['hpmin'],enemy_data['Grandpa']['hpmax'])
             self.min=enemy_data['Grandpa']['attackmin']
             self.max=enemy_data['Grandpa']['attackmax']
             self.gold=enemy_data['Grandpa']['gold']
-            self.image = load_image('Battle_State/battle_grandpa2.png')
+            self.image = load_image('Battle_State/battle_grandpa3.png')
         elif self.type == self.GIRL:
             self.hp= random.randint(enemy_data['Girl']['hpmin'],enemy_data['Girl']['hpmax'])
             self.min=enemy_data['Girl']['attackmin']
@@ -245,6 +245,14 @@ class Number:
         number_data_file = open('Data/Battle_textbox_number_hp.txt','r')
         number_data = json.load(number_data_file)
         number_data_file.close()
+
+        self.hit_sound = load_music('Sound/effect/battle/hit.mp3')
+        self.hit_sound.set_volume(70)
+        #self.counter_sound=load_music('Sound/effect/battle/bloody_hit.wav') 이 사운드를 불러오지 못함
+        #self.counter_sound.set_volume(70)
+        self.ouch_sound = load_music('Sound/effect/battle/male_ouch.wav')
+        self.ouch_sound.set_volume(70)
+
         self.enem_pos_1_x,self.enem_pos_1_y=number_data['AttackNumber_1']['Enemy_x'], number_data['AttackNumber_1']['Enemy_y']
         self.enem_pos_10_x,self.enem_pos_10_y=number_data['AttackNumber_10']['Enemy_x'], number_data['AttackNumber_10']['Enemy_y']
         self.user_pos_1_x,self.user_pos_1_y=number_data['AttackNumber_1']['User_x'], number_data['AttackNumber_1']['User_y']
@@ -312,7 +320,6 @@ class Number:
                 self.result_one_x,self.result_one_y= self.user_pos_1_x,self.user_pos_1_y
             else:
                 self.result_one_x,self.result_one_y= self.user_pos_10_x,self.user_pos_10_y
-
             self.switch =1
 
         if battle_step == STEP_TURN_END and self.switch == 1:
@@ -321,14 +328,17 @@ class Number:
             text_box.string3 = "                               "
             text_box.string4 = "                               "
             if self.result == self.attack_value:
+                self.hit_sound.play()
                 enem.hp -= self.result
                 text_box.string1 = "카운터 공격에 성공했으므로                   "
                 text_box.string2 = "상대에게 %3d"%self.result + " 만큼의 피해를 입힙니다.        "
             elif self.result > self.attack_value:
+                self.hit_sound.play()
                 enem.hp -= (self.result - self.attack_value)
                 text_box.string1 = "나의 결과값이 상대보다 크므로                "
                 text_box.string2 = "상대에게 %3d"%(self.result - self.attack_value) + " 만큼의 피해를 주었습니다.           "
             else:
+                self.ouch_sound.play()
                 Player.hp -= (self.attack_value - self.result)
                 text_box.string1 = "나의 결과값이 상대보다 작으므로              "
                 text_box.string2 = "내가 %3d"%(self.attack_value - self.result) + " 만큼의 피해를 받았습니다.           "
@@ -432,7 +442,25 @@ step5 전투종료 (승리 혹은 패배)
 
 # 메인에서 유저객체와 npc의 타입을 받아와 설정해준다.
 def enter(user,npc):
-    global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp, Player, cursor
+    print("배틀 enter")
+    global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp, Player, cursor, bgm, rolling_sound, throw_sound, win_sound,lose_sound,click_sound,finish_sound
+    #소리
+    bgm=load_music('Sound/bgm/battle_bgm.mp3')
+    bgm.set_volume(70)
+    bgm.repeat_play()
+    rolling_sound =load_music('Sound/effect/battle/rolling_dice.wav')
+    rolling_sound.set_volume(70)
+    throw_sound=load_music('Sound/effect/battle/throw_dice.mp3')
+    throw_sound.set_volume(70)
+    lose_sound = load_music('Sound/effect/battle/lose.mp3')
+    lose_sound.set_volume(70)
+    win_sound = load_music('Sound/effect/battle/win.wav')
+    win_sound.set_volume(70)
+    click_sound =load_music('Sound/effect/ui/ui_user_ok.wav')
+    click_sound.set_volume(70)
+    finish_sound=load_music('Sound/effect/ui/ui_user_finish.wav')
+    finish_sound.set_volume(70)
+
     Player = user
     ground_image = load_image('Battle_State/battle_ground_test3.png')
     text_image = load_image('Battle_State/battle_text_box.png')
@@ -450,13 +478,14 @@ def enter(user,npc):
 
 
 def exit():
-   pass #객체를 지우면 에러가 발생한다. 어떤 메카닉으로 작동하는지 모르겠다. 나중에 여쭤봐야겠다.
+    print("배틀 exit")
+    bgm.stop()
 
 def pause():
-    pass
+    print("배틀 pause")
 
 def resume():
-    pass
+    print("배틀 resume")
 
 
 def handle_events(frame_time):
@@ -469,8 +498,12 @@ def handle_events(frame_time):
             if event.key == SDLK_ESCAPE:
                 game_framework.quit()
             elif event.key == SDLK_z:
-                if(battle_step < STEP_SELECT_TOOLS):
+                if battle_step == STEP_ENEMY_TURN:
                     battle_step +=1
+                    rolling_sound.play()
+                elif battle_step == STEP_USER_TURN:
+                    battle_step+=1
+                    throw_sound.play()
                 elif battle_step ==STEP_SELECT_TOOLS and int(Criminal_Tool.check_state / 10)!=0 and int(Criminal_Tool.check_state % 10)!=0:
                     battle_step +=1
                 elif battle_step == STEP_CHECK_RESULT:
@@ -505,6 +538,7 @@ def handle_events(frame_time):
             if (event.button == SDL_BUTTON_LEFT) and ( int(Criminal_Tool.check_state / 10)==0 or int(Criminal_Tool.check_state % 10)==0):
                 for tool in tool_group:
                     if battle_step == STEP_SELECT_TOOLS and collide(event.x,600-event.y,tool) and tool.state == tool.IDLE:
+                        click_sound.play()
                         cursor.state=cursor.ROCK
                         tool.x=event.x
                         tool.y= 600-event.y
@@ -536,6 +570,7 @@ def handle_events(frame_time):
             if (event.button == SDL_BUTTON_RIGHT):
                  for tool in tool_group:
                     if battle_step == STEP_SELECT_TOOLS and collide(event.x,600-event.y,tool):
+                        click_sound.play()
                         if tool.state == tool.FIRST_SELECTED:
                             Criminal_Tool.check_state -=10*tool.type
                             tool_group.remove(tool)
@@ -551,15 +586,17 @@ def handle_events(frame_time):
                     second_box_type = int(Criminal_Tool.check_state % 10) # 두번째 연산기호 (일의 자리)
                     textbox.wait=0
                     if first_box_type == 0 and toolbox == 1 and (tool.type < tool.SPANNER or tool.type !=second_box_type): # 첫번째칸이 비었고, 첫번째 안에서 마우스버튼을 떼었을 때
+                        finish_sound.play()
                         tool.state = tool.FIRST_SELECTED #첫번째 칸
                         tool.x, tool.y = tool.First_x,tool.First_y
                         Criminal_Tool.check_state +=10*tool.type
                         tool_group.append(Criminal_Tool(tool.type))
                     elif second_box_type == 0 and toolbox == 2 and (tool.type < tool.SPANNER or tool.type !=first_box_type):
-                            tool.state = tool.SECOND_SELECTED #두번째 칸
-                            tool.x, tool.y = tool.Second_x,tool.Second_y
-                            Criminal_Tool.check_state +=tool.type
-                            tool_group.append(Criminal_Tool(tool.type))
+                        finish_sound.play()
+                        tool.state = tool.SECOND_SELECTED #두번째 칸
+                        tool.x, tool.y = tool.Second_x,tool.Second_y
+                        Criminal_Tool.check_state +=tool.type
+                        tool_group.append(Criminal_Tool(tool.type))
                     else:
                         tool.__init__(tool.type) #원래 자리로 초기화
 
@@ -590,6 +627,8 @@ def initialize_turn():
 
 def battle_win():
     global Player, enemy
+    win_sound.play()
+
     Player.gold += enemy.gold
     suspicion_sum=0
     textbox.string1 = "강도질 성공!!                              "
@@ -628,6 +667,8 @@ def battle_win():
 
 def battle_lose():
     global Player
+    lose_sound.play()
+
     #피해자
     Player.last_type = enemy.type
     Player.type_s = enemy.type_s

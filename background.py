@@ -4,7 +4,10 @@ from pico2d import *
 class FixedBackground:
 
     def __init__(self, boy):
-        self.image = load_image('Main_Map/final_map_test2.png')
+        self.bgm = load_music('Sound/bgm/main_bgm.mp3')
+        self.bgm.set_volume(70)
+        self.bgm.repeat_play()
+        self.image = load_image('Main_Map/final_map_test2.png') #2155 x 960
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.w = self.image.w
@@ -139,7 +142,4 @@ class FixedBackground:
     def update(self):
         self.left = clamp(0, int(self.center_object.x) - self.canvas_width//2, self.w - self.canvas_width)
         self.bottom = clamp (0, int(self.center_object.y) - self.canvas_height//2, self.h - self.canvas_height)
-
-
-
 

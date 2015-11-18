@@ -20,6 +20,11 @@ class Entrance:
         self.police_price=0
         self.dice_price=0
 
+        self.buy_sound = load_music('Sound/effect/ui/ui_buy.wav')
+        self.buy_sound.set_volume(70)
+        self.fail_sound = load_music('Sound/effect/ui/ui_fail.wav')
+        self.fail_sound.set_volume(70)
+
         ent_data_file = open('Data/Entrance.txt','r')
         ent_data = json.load(ent_data_file)
         ent_data_file.close()
@@ -145,48 +150,59 @@ class Entrance:
         ent_data = json.load(ent_data_file)
         ent_data_file.close()
         if self.check_last_place():
+            self.fail_sound.play()
             main_text.string2 = "이 건물은 최근 범행구역 안에 있으므로                      "
             main_text.string3 = "이용할 수 없습니다.                                            "
         elif self.active_type == self.PIZZA_SHOP:
             if self.user.gold >=ent_data['Pizza_Shop']['price'] and self.user.hp != self.user.maxhp:
+                self.buy_sound.play()
                 self.user.gold -=ent_data['Pizza_Shop']['price']
                 self.user.hp +=ent_data['Pizza_Shop']['heal']
                 main_text.string2 = "피자를 먹고 체력 50 을 회복했습니다.                      "
                 main_text.string3 = "돈 -600원                                          "
             elif self.user.gold < ent_data['Pizza_Shop']['price'] :
+                self.fail_sound.play()
                 main_text.string2 = "돈이 부족하여 피자를                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
+                self.fail_sound.play()
                 main_text.string2 = "이미 체력이 최대치입니다.                           "
                 main_text.string3 = "                                                    "
         elif self.active_type == self.BAKERY:
             if self.user.gold >=ent_data['Bakery']['price'] and self.user.hp != self.user.maxhp:
+                self.buy_sound.play()
                 self.user.gold -=ent_data['Bakery']['price']
                 self.user.hp +=ent_data['Bakery']['heal']
                 main_text.string2 = "크림빵을 먹고 체력 5 를 회복했습니다.                      "
                 main_text.string3 = "돈 -100원                                          "
             elif self.user.gold < ent_data['Bakery']['price']:
+                self.fail_sound.play()
                 main_text.string2 = "돈이 부족하여 크림빵을                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
+                self.fail_sound.play()
                 main_text.string2 = "이미 체력이 최대치입니다.                           "
                 main_text.string3 = "                                                    "
         elif self.active_type == self.POLICE_STATION:
             if self.user.gold >=self.police_price and self.user.suspicion != 0:
+                self.buy_sound.play()
                 self.user.gold -=self.police_price
                 self.user.suspicion = 0
                 main_text.string2 = "뇌물을 주어 혐의가 0 %가 되었습니다.                      "
                 main_text.string3 = "돈 -%4d"%self.police_price+"원                                          "
             elif self.user.gold < self.police_price and self.user.suspicion != 0:
+                self.fail_sound.play()
                 main_text.string2 = "혐의를 0 %로 만들기엔                      "
                 main_text.string3 = "가진 돈이 부족합니다.                                     "
         elif self.active_type == self.CITY_HALL:
             if self.user.gold >=self.dice_price and self.user.dice_num != 5:
+                self.buy_sound.play()
                 self.user.gold -=self.dice_price
                 self.user.dice_num += 1
                 main_text.string2 = "주사위최댓값이 1 증가했습니다!                      "
                 main_text.string3 = "돈 -%4d"%self.dice_price+"원                                          "
             elif self.user.gold < self.dice_price and self.user.dice_num != 5:
+                self.fail_sound.play()
                 main_text.string2 = "주사위 업그레이드를 하기엔                           "
                 main_text.string3 = "가진 돈이 부족합니다.                                     "
         elif self.active_type == self.HOTEL:
@@ -194,26 +210,32 @@ class Entrance:
                 main_text.string3 = "                                          "
         elif self.active_type == self.DRUG_STORE:
             if self.user.gold >= self.hp_price and self.user.maxhp !=99:
+                self.buy_sound.play()
                 self.user.gold -= self.hp_price
                 self.user.maxhp +=ent_data['Drug_Store']['add_hp']
                 main_text.string2 = "최대체력이 10 만큼 증가했습니다!                      "
                 main_text.string3 = "돈 -"+"%4d"%self.hp_price+"원                                     "
             elif self.user.gold < self.hp_price:
+                self.fail_sound.play()
                 main_text.string2 = "돈이 부족하여 건강증진제를                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.maxhp == 99:
+                self.fail_sound.play()
                 main_text.string2 = "최대 체력은 99 를 초과할 수 없습니다.                          "
                 main_text.string3 = "                                                  "
         elif self.active_type == self.BURGER_SHOP:
             if self.user.gold >=ent_data['Burger_Shop']['price'] and self.user.hp != self.user.maxhp:
+                self.buy_sound.play()
                 self.user.gold -=ent_data['Burger_Shop']['price']
                 self.user.hp +=ent_data['Burger_Shop']['heal']
                 main_text.string2 = "햄버거를 먹고 체력 20 을 회복했습니다.                      "
                 main_text.string3 = "돈 -300원                                          "
             elif self.user.gold < ent_data['Burger_Shop']['price']:
+                self.fail_sound.play()
                 main_text.string2 = "돈이 부족하여 햄버거를                      "
                 main_text.string3 = "구입할 수 없습니다.                                     "
             elif self.user.hp == self.user.maxhp:
+                self.fail_sound.play()
                 main_text.string2 = "이미 체력이 최대치입니다.                           "
                 main_text.string3 = "                                                    "
         main_text.step =1
@@ -240,6 +262,10 @@ class Main_Text:
     button_image = None
     font = None
     def __init__(self):
+        self.move_sound=load_music('Sound/effect/ui/ui_move_ok.wav')
+        self.move_sound.set_volume(70)
+        self.ok_sound = load_music('Sound/effect/ui/ui_user_ok.wav')
+        self.ok_sound.set_volume(70)
         self.yes = True
         self.npc = None
         self.step = 0
@@ -274,9 +300,12 @@ name = "MainState"
 boy = None
 font = None
 npc_cnt = 1
+bgm = None
 
-def enter():
+def enter(object1=None,object2=None):
+    print("메인스테이트 enter")
     global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor
+
     #텍스트
     font = load_font('nanumfont.ttf')
     main_text = Main_Text()
@@ -312,15 +341,20 @@ def enter():
     cursor=class_cursor.Cursor()
 
 def exit():
+    print("메인스테이트 exit")
     global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor
     del(boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor)
 
 
 def pause():
-    pass
+    global background
+    print("메인스테이트 pause")
+    background.bgm.pause()
 
 def resume():
-    pass
+    global background
+    print("메인스테이트 resume")
+    background.bgm.resume() #다시 재생되지 않는다.
 
 def communicate(event):
     global npc_cnt
@@ -328,9 +362,12 @@ def communicate(event):
         if main_text.step ==0:
             if event.key == SDLK_RIGHT:
                 main_text.yes = 0
+                main_text.move_sound.play()
             elif event.key == SDLK_LEFT:
                 main_text.yes = 1
+                main_text.move_sound.play()
             if main_text.yes == 0 and event.key == SDLK_z:
+                main_text.ok_sound.play()
                 if main_text.npc.type >=Entrance.HOSPITAL:
                     boy.x -=boy.DISTANCE
                     boy.y-=boy.DISTANCE
@@ -340,6 +377,7 @@ def communicate(event):
                 main_text.npc=None
                 main_text.yes = 1
             elif main_text.yes == 1 and event.key == SDLK_z:
+                main_text.ok_sound.play()
                 if main_text.npc.type < Entrance.HOSPITAL:
                     if boy.place == police.place and main_text.npc.type != 70:
                         main_text.string1 = "현재 이 구역은 경찰이 순찰 중이므로                      "
@@ -374,6 +412,7 @@ def communicate(event):
                         ent.handle_event(main_text)
         elif main_text.step == 1:
             if event.key == SDLK_z:
+                main_text.ok_sound.play()
                 if main_text.npc.type >=Entrance.HOSPITAL:
                     boy.x -=boy.DISTANCE
                     boy.y -=boy.DISTANCE
