@@ -246,12 +246,12 @@ class Number:
         number_data = json.load(number_data_file)
         number_data_file.close()
 
-        self.hit_sound = load_music('Sound/effect/battle/hit.mp3')
-        self.hit_sound.set_volume(70)
-        #self.counter_sound=load_music('Sound/effect/battle/bloody_hit.wav') 이 사운드를 불러오지 못함
+        self.hit_sound = load_wav('Sound/effect/battle/hit.wav')
+        self.hit_sound.set_volume(120)
+        #self.counter_sound=load_wav('Sound/effect/battle/bloody_hit.wav') 불러오지 못함
         #self.counter_sound.set_volume(70)
-        self.ouch_sound = load_music('Sound/effect/battle/male_ouch.wav')
-        self.ouch_sound.set_volume(70)
+        self.ouch_sound = load_wav('Sound/effect/battle/male_ouch.wav')
+        self.ouch_sound.set_volume(120)
 
         self.enem_pos_1_x,self.enem_pos_1_y=number_data['AttackNumber_1']['Enemy_x'], number_data['AttackNumber_1']['Enemy_y']
         self.enem_pos_10_x,self.enem_pos_10_y=number_data['AttackNumber_10']['Enemy_x'], number_data['AttackNumber_10']['Enemy_y']
@@ -443,23 +443,21 @@ step5 전투종료 (승리 혹은 패배)
 # 메인에서 유저객체와 npc의 타입을 받아와 설정해준다.
 def enter(user,npc):
     print("배틀 enter")
-    global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp, Player, cursor, bgm, rolling_sound, throw_sound, win_sound,lose_sound,click_sound,finish_sound
+    global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp, Player, cursor, bgm, rolling_sound, win_sound,lose_sound,click_sound,finish_sound
     #소리
     bgm=load_music('Sound/bgm/battle_bgm.mp3')
     bgm.set_volume(70)
     bgm.repeat_play()
-    rolling_sound =load_music('Sound/effect/battle/rolling_dice.wav')
+    rolling_sound =load_wav('Sound/effect/battle/rolling_dice.wav')
     rolling_sound.set_volume(70)
-    throw_sound=load_music('Sound/effect/battle/throw_dice.mp3')
-    throw_sound.set_volume(70)
-    lose_sound = load_music('Sound/effect/battle/lose.mp3')
+    lose_sound = load_music ('Sound/effect/battle/lose.wav')
     lose_sound.set_volume(70)
-    win_sound = load_music('Sound/effect/battle/win.wav')
+    win_sound = load_music('Sound/effect/battle/win.mp3')
     win_sound.set_volume(70)
-    click_sound =load_music('Sound/effect/ui/ui_user_ok.wav')
+    click_sound =load_wav('Sound/effect/ui/ui_user_ok.wav')
     click_sound.set_volume(70)
-    finish_sound=load_music('Sound/effect/ui/ui_user_finish.wav')
-    finish_sound.set_volume(70)
+    finish_sound=load_wav('Sound/effect/ui/ui_user_finish.wav')
+    finish_sound.set_volume(90)
 
     Player = user
     ground_image = load_image('Battle_State/battle_ground_test3.png')
@@ -503,7 +501,6 @@ def handle_events(frame_time):
                     rolling_sound.play()
                 elif battle_step == STEP_USER_TURN:
                     battle_step+=1
-                    throw_sound.play()
                 elif battle_step ==STEP_SELECT_TOOLS and int(Criminal_Tool.check_state / 10)!=0 and int(Criminal_Tool.check_state % 10)!=0:
                     battle_step +=1
                 elif battle_step == STEP_CHECK_RESULT:

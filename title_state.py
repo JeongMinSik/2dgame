@@ -8,7 +8,7 @@ name = "TitleState"
 def enter(object1=None,object2=None):
     global back_image,space_image, name_image, opacify_time,change, name_x, cursor,bgm
     bgm=load_music('Sound/bgm/title_bgm.mp3')
-    bgm.set_volume(70)
+    bgm.set_volume(40)
     bgm.repeat_play()
     back_image = load_image('Title/title_01.png')
     space_image = load_image('Title/space_bar.png')

@@ -19,6 +19,9 @@ class User:
     DISTANCE = 8
 
     def __init__(self):
+        self.meet_sound = load_wav ('Sound/effect/ui/ui_meet.wav')
+        self.meet_sound.set_volume(80)
+
         user_data_file = open('Data/User.txt','r')
         user_data = json.load(user_data_file)
         user_data_file.close()
@@ -150,6 +153,7 @@ class User:
             self.x += User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
+                    self.meet_sound.play()
                     npc.state = npc.LEFT
                     main_text.npc =npc
                     self.running =False
@@ -158,6 +162,7 @@ class User:
             self.x -= User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
+                    self.meet_sound.play()
                     npc.state = npc.RIGHT
                     main_text.npc =npc
                     self.running =False
@@ -167,6 +172,7 @@ class User:
             self.x += User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
+                    self.meet_sound.play()
                     npc.state = npc.DOWN
                     main_text.npc =npc
                     self.running =False
@@ -177,6 +183,7 @@ class User:
             self.x -= User.DISTANCE
             for npc in self.npc_group:
                 if self.collide(npc):
+                    self.meet_sound.play()
                     npc.state = npc.UP
                     main_text.npc =npc
                     self.running =False
