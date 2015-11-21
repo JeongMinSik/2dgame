@@ -226,16 +226,9 @@ class User:
                     self.state = self.DOWN
                 elif event.key == SDLK_z:
                     self.check_front(main_text)
-            ###########################(개발용) 좌표 세이브,삭제모드################################
+            ###########################(개발용) 세이브 데이터###############################
                 elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-                    self.save_state = 1
-                    print ("세이브 모드")
-                elif event.type == SDL_KEYDOWN and event.key == SDLK_d:
-                    self.save_state = 2
-                    print (" 삭제 모드")
-                elif event.type == SDL_KEYDOWN and event.key == SDLK_q:
-                    self.save_state = 0
-                    print("모드 종료")
+                    pass
             ####################################################################################
             elif event.type == SDL_KEYUP:
                 if event.key == SDLK_RIGHT and self.state == self.RIGHT:

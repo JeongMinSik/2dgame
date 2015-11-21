@@ -8,6 +8,7 @@ import battle_state
 import class_user
 import class_npc
 import class_cursor
+from save_load import *
 
 class Entrance:
     buy_sound = None
@@ -231,11 +232,9 @@ class Entrance:
                 main_text.string2 = "주사위 업그레이드를 하기엔                           "
                 main_text.string3 = "가진 돈이 부족합니다.                                     "
         elif self.active_type == self.HOTEL:
-            f = open('Data/save/save.txt','w')
-            f.write("저장할 정보")
-            f.close()
-            main_text.string2 = "미구현                                     "
-            main_text.string3 = "                                          "
+            save(self.user,npc_group,npc_cnt)
+            main_text.string2 = "현재 게임상태를 저장했습니다.                                     "
+            main_text.string3 = "                                                             "
         elif self.active_type == self.DRUG_STORE:
             if self.user.gold >= self.hp_price and self.user.maxhp !=99:
                 Entrance.buy_sound.play()
@@ -329,9 +328,9 @@ boy = None
 font = None
 npc_cnt = 1
 
-def enter(object1=None,object2=None):
+def enter(New1_Load2,object2=None):
     print("메인스테이트 enter")
-    global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor
+    global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor,npc_cnt
     #텍스트
     font = load_font('nanumfont.ttf')
     main_text = Main_Text()
@@ -346,18 +345,24 @@ def enter(object1=None,object2=None):
     #입구설정
     entrance_group=[Entrance(i,boy) for i in range(11)]
 
-    #초기 npc그룹 생성
-    npc_data_file = open('Data/Npc.txt','r')
-    npc_data = json.load(npc_data_file)
-    npc_data_file.close()
     npc_group =[]
-    police=class_npc.Npc(npc_data['Police']['x'],npc_data['Police']['y'],boy,background,npc_group,1)
-    npc_group.append(police)
+    #불러오기
+    if New1_Load2 == 2:
+        npc_cnt = load(boy,npc_group,background)
+        police = npc_group[0]
 
-    #초기 npc 1+9 (10명) 생성
-    while npc_cnt <10:
-        for i in range(1,11):
-            generate(i)
+    #새로 시작 (npc 초기설정)
+    elif New1_Load2 == 1:
+        npc_data_file = open('Data/Npc.txt','r')
+        npc_data = json.load(npc_data_file)
+        npc_data_file.close()
+        police=class_npc.Npc(npc_data['Police']['x'],npc_data['Police']['y'],boy,background,npc_group,70)
+        npc_group.append(police)
+        while npc_cnt <10:
+            for i in range(1,11):
+                generate(i)
+
+
     #유저 초기위치설정
     user_data_file = open('Data/User.txt','r')
     user_data = json.load(user_data_file)
@@ -371,8 +376,8 @@ def enter(object1=None,object2=None):
 
 def exit():
     print("메인스테이트 exit")
-    global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor
-    del(boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor)
+    global boy,background,font,npc_group,status_image,main_text,entrance_group,cursor
+    del(boy,background,font,npc_group,status_image,main_text,entrance_group,cursor)
 
 
 def pause():
@@ -470,8 +475,6 @@ def handle_events(frame_time):
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
         ###########################(개발용) 배열값 콘솔창에 출력 ################################
         #elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
         #    for row in boy.bg.map_matrix:
@@ -545,7 +548,7 @@ def camera_view(x,y):
 
 def generate(generation_zone):
     global npc_cnt, npc_group
-    temp_npc=class_npc.Npc(0,0,boy,background,npc_group)
+    temp_npc=class_npc.Npc(0,0,boy,background,npc_group,None)
     zone_data_file = open('Data/Generate.txt','r')
     zone_data = json.load(zone_data_file)
     zone_data_file.close()

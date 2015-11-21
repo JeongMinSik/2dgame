@@ -18,7 +18,7 @@ class Npc:
 
     DISTANCE = 8
 
-    def __init__(self,x,y,user,bg,npc_group=None,police=None):
+    def __init__(self,x,y,user,bg,npc_group=None,type=None):
         npc_data_file = open('Data/Npc.txt','r')
         npc_data = json.load(npc_data_file)
         npc_data_file.close()
@@ -36,8 +36,10 @@ class Npc:
         self.type_s = " "
         self.speech = "\"디폴트!\"                        "
         self.place = ""
-        if police == None:
+        if type == None:
             self.select_type() # 타입지정
+        elif type <70:
+            self.type = type
         else:
             self.type = self.POLICE
             self.type_s="경찰"

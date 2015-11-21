@@ -328,12 +328,12 @@ class Number:
             text_box.string3 = "                               "
             text_box.string4 = "                               "
             if self.result == self.attack_value:
-                self.hit_sound.play()
+                self.hit_sound.play(3)
                 enem.hp -= self.result
                 text_box.string1 = "카운터 공격에 성공했으므로                   "
                 text_box.string2 = "상대에게 %3d"%self.result + " 만큼의 피해를 입힙니다.        "
             elif self.result > self.attack_value:
-                self.hit_sound.play()
+                self.hit_sound.play(2)
                 enem.hp -= (self.result - self.attack_value)
                 text_box.string1 = "나의 결과값이 상대보다 크므로                "
                 text_box.string2 = "상대에게 %3d"%(self.result - self.attack_value) + " 만큼의 피해를 주었습니다.           "
