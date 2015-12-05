@@ -1,10 +1,10 @@
 {
 "Position" : {"x":600, "y":360},
-"Grandma" : {"hpmin":10, "hpmax":16, "attackmin":1, "attackmax":3, "gold":150},
-"Grandpa" : {"hpmin":13, "hpmax":19, "attackmin":1, "attackmax":5, "gold":300},
-"Girl" : {"hpmin":17, "hpmax":23, "attackmin":3, "attackmax":6, "gold":500},
-"Boy" : {"hpmin":22, "hpmax":28, "attackmin":5, "attackmax":9, "gold":750},
-"Woman" : {"hpmin":28, "hpmax":34, "attackmin":7, "attackmax":12, "gold":1100},
-"Man" : {"hpmin":35, "hpmax":40, "attackmin":9, "attackmax":15, "gold":1500},
-"Police" : {"hp":99, "attackmin":12, "attackmax":20, "gold":100000}
+"Grandma" : {"hpmin":10, "hpmax":16, "attackmin":1, "attackmax":3, "gold":400},
+"Grandpa" : {"hpmin":13, "hpmax":19, "attackmin":1, "attackmax":5, "gold":800},
+"Girl" : {"hpmin":17, "hpmax":23, "attackmin":3, "attackmax":6, "gold":1200},
+"Boy" : {"hpmin":22, "hpmax":28, "attackmin":5, "attackmax":9, "gold":1600},
+"Woman" : {"hpmin":28, "hpmax":34, "attackmin":7, "attackmax":12, "gold":2000},
+"Man" : {"hpmin":35, "hpmax":40, "attackmin":9, "attackmax":15, "gold":2500},
+"Police" : {"hp":90, "attackmin":12, "attackmax":20, "gold":100000}
 }

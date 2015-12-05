@@ -334,9 +334,13 @@ class Number:
                 text_box.string2 = "상대에게 %3d"%self.result + " 만큼의 피해를 입힙니다.        "
             elif self.result > self.attack_value:
                 self.hit_sound.play(2)
-                enem.hp -= (self.result - self.attack_value)
+                minus_hp = (self.result - self.attack_value)
+                if (enem.type > Enemy.BOY) and minus_hp > 2*self.attack_value:
+                    text_box.string3 = "(성인은 감소된 피해량을 받습니다.)      "
+                    minus_hp = 2*self.attack_value
+                enem.hp -= minus_hp
                 text_box.string1 = "나의 결과값이 상대보다 크므로                "
-                text_box.string2 = "상대에게 %3d"%(self.result - self.attack_value) + " 만큼의 피해를 주었습니다.           "
+                text_box.string2 = "상대에게 %3d"%(minus_hp) + " 만큼의 피해를 주었습니다.           "
             else:
                 self.ouch_sound.play()
                 Player.hp -= (self.attack_value - self.result)
@@ -626,8 +630,7 @@ def initialize_turn():
     enemy.set_attack_value()
 
 def battle_win():
-    global Player, enemy
-    win_sound.play()
+    global Player, enemy, win_sound
 
     Player.gold += enemy.gold
     suspicion_sum=0
@@ -670,6 +673,9 @@ def battle_win():
         textbox.string2 = "이제 당신은 이 마을에서                                   "
         textbox.string3 = "마음껏 강도질을 할 수 있습니다!!                             "
         textbox.string4 = "                                                      "
+        win_sound = load_music('Sound/police_win.wav')
+
+    win_sound.play()
 
 def battle_lose():
     global Player

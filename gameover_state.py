@@ -7,9 +7,9 @@ name = "gameover_state"
 
 def enter(object1=None,object2=None):
     global back_image,police_image, cursor,bgm, opacify_time, box_image, font
-    bgm=load_music('Sound/title_bgm.mp3')
-    bgm.set_volume(40)
-    bgm.repeat_play()
+    bgm=load_music('Sound/game_over.wav')
+    bgm.set_volume(50)
+    bgm.play()
 
     back_image = load_image('Game_Over/game_over.png')
     police_image = load_image('Game_Over/police.png')
@@ -45,7 +45,7 @@ def handle_events(frame_time):
 def update(frame_time):
     global space_image, opacify_time, change, name_x
     if opacify_time  > 0:
-        opacify_time -=0.005
+        opacify_time -=0.01
     police_image.opacify(opacify_time)
 
 def draw(frame_time):
