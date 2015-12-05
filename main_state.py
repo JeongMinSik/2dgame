@@ -29,22 +29,22 @@ class Entrance:
         self.dice_price=0
 
         if Entrance.buy_sound == None:
-            Entrance.buy_sound = load_wav('Sound/effect/ui/ui_buy.wav')
+            Entrance.buy_sound = load_wav('Sound/ui_buy.wav')
             Entrance.buy_sound.set_volume(70)
         if Entrance.fail_sound == None:
-            Entrance.fail_sound = load_wav('Sound/effect/ui/ui_fail.wav')
+            Entrance.fail_sound = load_wav('Sound/ui_fail.wav')
             Entrance.fail_sound.set_volume(70)
         if Entrance.male_welcome == None:
-            Entrance.male_welcome = load_wav('Sound/effect/building/male_welcome.wav')
+            Entrance.male_welcome = load_wav('Sound/male_welcome.wav')
             Entrance.male_welcome.set_volume(70)
         if Entrance.female_welcome == None:
-            Entrance.female_welcome = load_wav('Sound/effect/building/female_welcome.wav')
+            Entrance.female_welcome = load_wav('Sound/female_welcome.wav')
             Entrance.female_welcome.set_volume(70)
         if Entrance.male_goodbye == None:
-            Entrance.male_goodbye = load_wav('Sound/effect/building/male_goodbye.wav')
+            Entrance.male_goodbye = load_wav('Sound/male_goodbye.wav')
             Entrance.male_goodbye.set_volume(100)
         if Entrance.female_goodbye == None:
-            Entrance.female_goodbye = load_wav('Sound/effect/building/female_goodbye.wav')
+            Entrance.female_goodbye = load_wav('Sound/female_goodbye.wav')
             Entrance.female_goodbye.set_volume(100)
 
         ent_data_file = open('Data/Entrance.txt','r')
@@ -290,9 +290,9 @@ class Main_Text:
     button_image = None
     font = None
     def __init__(self):
-        self.move_sound=load_wav('Sound/effect/ui/ui_move_ok.wav')
+        self.move_sound=load_wav('Sound/ui_move_ok.wav')
         self.move_sound.set_volume(70)
-        self.ok_sound = load_wav('Sound/effect/ui/ui_user_ok.wav')
+        self.ok_sound = load_wav('Sound/ui_user_ok.wav')
         self.ok_sound.set_volume(70)
         self.yes = True
         self.npc = None
@@ -306,7 +306,7 @@ class Main_Text:
         if Main_Text.button_image == None:
             Main_Text.button_image = load_image('Main_Map/button_y_n.png')
         if Main_Text.font == None:
-            Main_Text.font=load_font('nanumfont.ttf')
+            Main_Text.font=load_font('Font/nanumfont.ttf')
 
 
     def draw(self):
@@ -334,7 +334,7 @@ def enter(New1_Load2,object2=None):
     print("메인스테이트 enter")
     global boy,background,font,npc_group,status_image,main_text,police,entrance_group,cursor,npc_cnt
     #텍스트
-    font = load_font('nanumfont.ttf')
+    font = load_font('Font/nanumfont.ttf')
     main_text = Main_Text()
 
     #유저와 백그라운드설정

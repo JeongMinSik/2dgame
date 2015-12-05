@@ -4,7 +4,7 @@ from pico2d import *
 class FixedBackground:
 
     def __init__(self, boy):
-        self.bgm = load_music('Sound/bgm/main_bgm.mp3')
+        self.bgm = load_music('Sound/main_bgm.mp3')
         self.bgm.set_volume(40)
         self.image = load_image('Main_Map/final_map_test2.png') #2155 x 960
         self.canvas_width = get_canvas_width()

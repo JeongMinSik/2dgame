@@ -19,7 +19,7 @@ class User:
     DISTANCE = 8
 
     def __init__(self):
-        self.meet_sound = load_wav ('Sound/effect/ui/ui_meet.wav')
+        self.meet_sound = load_wav ('Sound/ui_meet.wav')
         self.meet_sound.set_volume(80)
 
         user_data_file = open('Data/User.txt','r')

@@ -1,7 +1,7 @@
 import class_npc
 
 def save(user,npc_group,npc_cnt):
-    f = open('Data/save/save.txt','w')
+    f = open('Data/save.txt','w')
     f.write(str(user.x)+'\n')
     f.write(str(user.y)+'\n')
     f.write(str(user.step_cnt)+'\n')
@@ -31,7 +31,7 @@ def save(user,npc_group,npc_cnt):
     f.close()
 
 def load(user,npc_group, bg):
-    f = open('Data/save/save.txt','r')
+    f = open('Data/save.txt','r')
     user.x = int(f.readline()) - 8
     user.y = int(f.readline()) - 8
     user.step_cnt = (int(f.readline()))

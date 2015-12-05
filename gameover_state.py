@@ -7,7 +7,7 @@ name = "gameover_state"
 
 def enter(object1=None,object2=None):
     global back_image,police_image, cursor,bgm, opacify_time, box_image, font
-    bgm=load_music('Sound/bgm/title_bgm.mp3')
+    bgm=load_music('Sound/title_bgm.mp3')
     bgm.set_volume(40)
     bgm.repeat_play()
 
@@ -15,7 +15,7 @@ def enter(object1=None,object2=None):
     police_image = load_image('Game_Over/police.png')
     box_image = load_image('Main_Map/main_text_box.png')
     box_image.opacify(0.9)
-    font=load_font('nanumfont.ttf')
+    font=load_font('Font/nanumfont.ttf')
     opacify_time=1
     cursor=class_cursor.Cursor()
 

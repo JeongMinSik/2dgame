@@ -189,7 +189,7 @@ class Textbox:
         self.tool_check2=  "스패너  x0        칼   x0        "
         self.wait=0 # 0: 기본, 1: 도구에 대한 설명이 출력중일때
         if Textbox.image == None:
-            Textbox.image=load_font('nanumfont.ttf')
+            Textbox.image=load_font('Font/nanumfont.ttf')
 
     def update(self,enem,player):
         tool=["  망치  x%3d"%Criminal_Tool.tool_cnt[1]+"     ","쇠사슬 x%3d"%Criminal_Tool.tool_cnt[2]+"       ","스패너 x%3d"%Criminal_Tool.tool_cnt[3]+"         ","칼   x%3d"%Criminal_Tool.tool_cnt[4]+"        "]
@@ -246,11 +246,11 @@ class Number:
         number_data = json.load(number_data_file)
         number_data_file.close()
 
-        self.hit_sound = load_wav('Sound/effect/battle/hit.wav')
+        self.hit_sound = load_wav('Sound/hit.wav')
         self.hit_sound.set_volume(120)
         #self.counter_sound=load_wav('Sound/effect/battle/bloody_hit.wav') 불러오지 못함
         #self.counter_sound.set_volume(70)
-        self.ouch_sound = load_wav('Sound/effect/battle/male_ouch.wav')
+        self.ouch_sound = load_wav('Sound/male_ouch.wav')
         self.ouch_sound.set_volume(120)
 
         self.enem_pos_1_x,self.enem_pos_1_y=number_data['AttackNumber_1']['Enemy_x'], number_data['AttackNumber_1']['Enemy_y']
@@ -445,15 +445,15 @@ def enter(user,npc):
     print("배틀 enter")
     global ground_image, text_image, tool_group, dice_group,ani_group,enemy, textbox, number, hp, Player, cursor, bgm, rolling_sound, win_sound,lose_sound,click_sound,finish_sound
     #소리
-    rolling_sound =load_wav('Sound/effect/battle/rolling_dice.wav')
+    rolling_sound =load_wav('Sound/rolling_dice.wav')
     rolling_sound.set_volume(70)
-    lose_sound = load_music ('Sound/effect/battle/lose.wav')
+    lose_sound = load_music ('Sound/lose.wav')
     lose_sound.set_volume(70)
-    win_sound = load_music('Sound/effect/battle/win.mp3')
+    win_sound = load_music('Sound/win.mp3')
     win_sound.set_volume(70)
-    click_sound =load_wav('Sound/effect/ui/ui_user_ok.wav')
+    click_sound =load_wav('Sound/ui_user_ok.wav')
     click_sound.set_volume(70)
-    finish_sound=load_wav('Sound/effect/ui/ui_user_finish.wav')
+    finish_sound=load_wav('Sound/ui_user_finish.wav')
     finish_sound.set_volume(90)
 
     Player = user
@@ -466,9 +466,9 @@ def enter(user,npc):
     ani_group=[Dice_Animation(i) for i in range(3)]
     enemy = Enemy(npc)
     if enemy.type == Enemy.POLICE:
-        bgm=load_music('Sound/bgm/boss_bgm.mp3')
+        bgm=load_music('Sound/boss_bgm.mp3')
     else:
-        bgm=load_music('Sound/bgm/battle_bgm.mp3')
+        bgm=load_music('Sound/battle_bgm.mp3')
     bgm.set_volume(70)
     bgm.repeat_play()
     number=Number()
@@ -706,6 +706,7 @@ def battle_lose():
         textbox.string2 = "공권력에 대한 도전이 실패했네요.                            "
         textbox.string3 = "경찰에게 현행범으로 체포되었습니다.                        "
         textbox.string4 = "                                                      "
+        enemy.image = load_image('Battle_State/battle_police_lose.png')
 
 
 
