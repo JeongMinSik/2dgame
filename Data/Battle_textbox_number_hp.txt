@@ -1,0 +1,8 @@
+{
+"TextPosition" : {"x":875, "y":730},
+"ToolCheckPosition" : {"x":30, "y":565},
+"AttackNumber_1" : {"Enemy_x": 604, "Enemy_y": 533, "User_x": 770, "User_y": 200},
+"AttackNumber_10" : {"Enemy_x": 620, "Enemy_y": 533, "User_x": 790, "User_y": 200},
+"EnemyHp" : {"x":795, "y":410},
+"UserHp" : {"x":1111, "y":72}
+}

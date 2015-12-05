@@ -1,0 +1,9 @@
+{
+"Grandma" : {"rangemin":10, "rangemax":13},
+"Grandpa" : {"rangemin":20, "rangemax":24},
+"Girl" : {"rangemin":30, "rangemax":36},
+"Boy" : {"rangemin":40, "rangemax":47},
+"Woman" : {"rangemin":50, "rangemax":60},
+"Man" : {"rangemin":60, "rangemax":70},
+"Police":{"x":1040,"y":472}
+}

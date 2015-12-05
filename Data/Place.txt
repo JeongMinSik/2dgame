@@ -1,0 +1,6 @@
+{
+"North" : {"y":720},
+"South" : {"y":392},
+"East_West" : {"x":1168},
+"Hospital" : {"x" :320, "bottom":200,"top":240}
+}

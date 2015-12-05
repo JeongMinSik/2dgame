@@ -1,0 +1,8 @@
+{
+"Hammer" : {"x":83, "y":443},
+"Chain" : {"x":210, "y":443},
+"Spanner" : {"x":83, "y":318},
+"Knife" : {"x":210, "y":318},
+"FirstSelectedPos" : {"x":203, "y":185},
+"SecondSelectedPos" : {"x":460, "y":185}
+}
