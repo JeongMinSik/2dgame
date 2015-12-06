@@ -2,7 +2,6 @@ from pico2d import *
 import random
 from background import FixedBackground as Background
 
-
 import game_framework
 import battle_state
 import class_user
