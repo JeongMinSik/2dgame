@@ -4,11 +4,11 @@
 "Game" : {"x":696,"y":184 },
 "Bakery" : {"x":976,"y":184, "price":100, "heal":5 },
 "Police_Station" : {"x":1136,"y":224 },
-"City_Hall" : {"x":776,"y":580, "dice_price":3000},
+"City_Hall" : {"x":776,"y":580, "dice_price":4000},
 "Hotel" : {"x":1160,"y":512 },
 "Empty_House1" : {"x":1256,"y":512 },
 "Empty_House2" : {"x":1352,"y":544 },
 "Drug_Store" : {"x":720,"y":792, "hp_price":1000 , "add_hp":10},
 "Burger_Shop" : {"x":848,"y":784, "price":300, "heal":20 },
-"Double_Price" : {"dice":3, "hp1":40,"hp2":60,"hp3":80,"hp4":100}
+"Double_Price" : {"dice":3, "hp1":30,"hp2":50,"hp3":70,"hp4":100}
 }
