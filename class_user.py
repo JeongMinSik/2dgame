@@ -3,10 +3,10 @@ from pico2d import *
 class User:
     image = None
     RIGHT,LEFT,UP,DOWN = 0, 1, 2, 3
-    HP_PER_STEPS = 70
+    HP_PER_STEPS = 80
 
 
-    PIXEL_PER_METER = (8 / 1)           # 10 pixel 30 cm
+    PIXEL_PER_METER = (8 / 1)           # 1 pixel 10 cm
     RUN_SPEED_KMPH = 60.0                    # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)

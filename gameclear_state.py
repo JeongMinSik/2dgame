@@ -56,8 +56,8 @@ def draw(frame_time):
     else:
         box_image.draw(1025,80)
         font.draw(880,115,"GAME CLEAR")
-        font.draw_unicode(880,85,"당신은 경찰을 제압하고 ")
-        font.draw_unicode(880,45,"이 마을 최고의 부자강도가 되었습니다.")
+        font.draw_unicode(880,85,"당신은 경찰을 제압하고                          ")
+        font.draw_unicode(880,45,"이 마을 최고의 부자강도가 되었습니다.            ")
     cursor.draw()
     update_canvas()
 

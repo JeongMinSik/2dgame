@@ -704,7 +704,7 @@ def battle_lose():
     textbox.string4 = "혐의 +"+"%3d"%(enemy.type * 6) + "%                "
     Player.x,Player.y,Player.state = HOSPITAL_X,HOSPITAL_Y,Player.DOWN
     Player.hp= HOSPITAL_HP # 죽으면 체력은 20으로 (20을 채우는 비용 < 혐의 8퍼 낮추는 비용)
-    Player.suspicion += (enemy.type * 8)
+    Player.suspicion += (enemy.type * 6)
 
     if enemy.type == Enemy.POLICE:
         Player.suspicion += 100
