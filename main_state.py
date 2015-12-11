@@ -326,7 +326,6 @@ class Main_Text:
 name = "MainState"
 boy = None
 font = None
-npc_cnt = 1
 wait_time=0
 
 def enter(New1_Load2,object2=None):
@@ -346,6 +345,7 @@ def enter(New1_Load2,object2=None):
     #입구설정
     entrance_group=[Entrance(i,boy) for i in range(11)]
 
+    npc_cnt = 1
     npc_group =[]
     #불러오기
     if New1_Load2 == 2:

@@ -37,7 +37,7 @@ class User:
         self.hp = self.maxhp = user_data['User']['maxhp']
         self.gold=user_data['User']['gold']
         self.dice_num=user_data['User']['dice']
-        self.suspicion=0
+        self.suspicion= 0
         self.place=''
 
         self.last_tool =0
